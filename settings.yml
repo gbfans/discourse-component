@@ -1,0 +1,213 @@
+gbfans_site_url:
+  default: "https://gbfans.com"
+  type: string
+  description: "Base URL of the main GBFans Next.js site (no trailing slash)."
+
+brand_name:
+  default: "GBFans"
+  type: string
+  description: "Brand name used in headings and alt text."
+
+logo_url:
+  default: "/GBFans-Logo-Wide-Black-BG.png"
+  type: string
+  description: "Path appended to site URL for the header logo."
+
+footer_logo_url:
+  default: "/GBFans-Square-Logo-White-Text.png"
+  type: string
+  description: "Path appended to site URL for the footer logo."
+
+top_bar_cta_text:
+  default: "Become a Supporting Member Today!"
+  type: string
+  description: "Call-to-action text shown in the desktop top bar."
+
+top_bar_cta_url:
+  default: "/supporting"
+  type: string
+  description: "URL for the top bar CTA link (relative to site URL)."
+
+nav_links:
+  type: objects
+  default:
+    - text: "News"
+      url: "/news/"
+      parent: ""
+      target: "_self"
+    - text: "Movies"
+      url: "/wiki/movies"
+      parent: ""
+      target: "_self"
+    - text: "Primary Universe"
+      url: "#"
+      parent: "Movies"
+      target: "_self"
+    - text: "Ghostbusters (1984)"
+      url: "/wiki/movies/ghostbusters"
+      parent: "Movies"
+      target: "_self"
+    - text: "Ghostbusters II (1989)"
+      url: "/wiki/movies/ghostbusters-ii"
+      parent: "Movies"
+      target: "_self"
+    - text: "Ghostbusters: Afterlife"
+      url: "/wiki/movies/ghostbusters-afterlife"
+      parent: "Movies"
+      target: "_self"
+    - text: "Ghostbusters: Frozen Empire"
+      url: "/wiki/movies/ghostbusters-frozen-empire"
+      parent: "Movies"
+      target: "_self"
+    - text: "Expanded Universe"
+      url: "#"
+      parent: "Movies"
+      target: "_self"
+    - text: "Ghostbusters: ATC (2016)"
+      url: "/wiki/movies/ghostbusters-answer-the-call"
+      parent: "Movies"
+      target: "_self"
+    - text: "Cartoons"
+      url: "/wiki/cartoons"
+      parent: ""
+      target: "_self"
+    - text: "Real Ghostbusters (1986-1991)"
+      url: "/wiki/cartoons/real-ghostbusters"
+      parent: "Cartoons"
+      target: "_self"
+    - text: "Slimer! (1988-1990)"
+      url: "/wiki/cartoons/slimer-and-the-real-ghostbusters"
+      parent: "Cartoons"
+      target: "_self"
+    - text: "Extreme Ghostbusters (1997)"
+      url: "/wiki/cartoons/extreme-ghostbusters"
+      parent: "Cartoons"
+      target: "_self"
+    - text: "Shopping"
+      url: "/shop"
+      parent: ""
+      target: "_self"
+    - text: "Pack Parts"
+      url: "/shop/pack-parts"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Uniforms"
+      url: "/uniform/"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Trap Parts"
+      url: "/shop/trap-parts"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Goggle Parts"
+      url: "/shop/goggle-parts"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Blower Parts"
+      url: "/shop/blower-parts"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Merchandise"
+      url: "/shop/merchandise"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Comic Books"
+      url: "/shop/comics"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Lapel Pins"
+      url: "/shop/lapel-pins"
+      parent: "Shopping"
+      target: "_self"
+    - text: "T-Shirts"
+      url: "/shop/shirts"
+      parent: "Shopping"
+      target: "_self"
+    - text: "Wiki"
+      url: "/wiki"
+      parent: ""
+      target: "_self"
+    - text: "Gallery"
+      url: "/gallery"
+      parent: ""
+      target: "_self"
+    - text: "Reference Section"
+      url: "/gallery/reference-photos"
+      parent: "Gallery"
+      target: "_self"
+    - text: "Discord"
+      url: "https://discord.gg/HF5X9dBTr6"
+      parent: ""
+      target: "_blank"
+    - text: "Forum"
+      url: "/"
+      parent: ""
+      target: "_self"
+  schema:
+    name: "navigation link"
+    properties:
+      text:
+        type: string
+        required: true
+        validations:
+          min_length: 1
+          max_length: 100
+      url:
+        type: string
+        required: true
+        validations:
+          max_length: 2048
+      parent:
+        type: string
+        description: "Leave empty for top-level items. Set to parent item's text for dropdown children."
+      target:
+        type: enum
+        default: _self
+        choices:
+          - _self
+          - _blank
+
+social_links:
+  type: objects
+  default:
+    - name: "Instagram"
+      url: "https://instagram.com/gbfans"
+      icon: "fab-instagram"
+    - name: "Facebook"
+      url: "https://facebook.com/gbfans"
+      icon: "fab-facebook"
+    - name: "X"
+      url: "https://x.com/gbfans"
+      icon: "fab-x-twitter"
+    - name: "YouTube"
+      url: "https://youtube.com/c/ghostbustersfans"
+      icon: "fab-youtube"
+  schema:
+    name: "social link"
+    properties:
+      name:
+        type: string
+        required: true
+      url:
+        type: string
+        required: true
+      icon:
+        type: string
+        required: true
+        description: "Font Awesome icon name (e.g., fab-instagram)"
+
+svg_icons:
+  type: list
+  list_type: compact
+  default: "fab-instagram|fab-facebook|fab-x-twitter|fab-youtube"
+  description: "FontAwesome icon classes used by social links. Add any new icons here so Discourse includes them in the icon sprite."
+
+footer_description:
+  default: "At GBFans.com, we\u2019re the largest community of passionate Ghostbusters fans, coming together to share news, stories, and resources about the franchise. We offer a Shop where fans can buy prop parts and merchandise, along with detailed tutorials and discussions to help build their own prop replicas like Proton Packs and Ghost Traps."
+  type: string
+  description: "Community description shown in the footer branding section."
+
+footer_join_url:
+  default: "/sign-up/"
+  type: string
+  description: "URL for the JOIN US link in the footer (relative to site URL)."
