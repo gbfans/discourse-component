@@ -1,0 +1,113 @@
+// =============================================================================
+// GBFans Theme Component — Mobile Overrides
+// =============================================================================
+// Loaded only for mobile user agents. The component's this.site.mobileView
+// already hides the top bar, nav bar, and ad slot. These are supplemental
+// style adjustments for the elements that remain visible on mobile.
+// =============================================================================
+
+:root {
+  // mobile: border-top(2) + logo header(~60) + nav-tile(8) = 70
+  --gbfans-chrome-height: 70px;
+}
+
+// ── Logo header — mobile sizing ──────────────────────────────────────────────
+.gbfans-logo-header__inner {
+  padding: 0 12px;
+}
+
+.gbfans-logo-link {
+  padding: 12px 0;
+}
+
+// ── Nav tile — smaller on mobile ─────────────────────────────────────────────
+.gbfans-nav-tile {
+  height: 8px;
+}
+
+// ── Content padding ──────────────────────────────────────────────────────────
+#main-outlet-wrapper {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+// ── Discourse header icons — white on dark header ────────────────────────────
+// On mobile, Discourse shows the hamburger/sidebar toggle natively.
+// We make the icons white on our dark header background.
+.d-header-icons,
+.header-sidebar-toggle {
+  .icon,
+  .header-dropdown-toggle,
+  .btn {
+    color: #ffffff !important;
+
+    .d-icon {
+      color: inherit;
+    }
+  }
+}
+
+// ── Reset Discourse header positioning for mobile ────────────────────────────
+// The common.scss repositions .d-header-wrap for the desktop top bar.
+// On mobile there is no top bar, so restore normal header behavior.
+.d-header-wrap {
+  position: relative !important;
+  height: auto;
+  pointer-events: auto;
+}
+
+.d-header {
+  height: auto !important;
+}
+
+// ── Mobile sidebar panel — dark theme ────────────────────────────────────────
+.hamburger-panel,
+.menu-panel.slide-in,
+.d-sidebar,
+.sidebar-wrapper {
+  background: var(--gbfans-header-bg) !important;
+  color: var(--gbfans-header-text) !important;
+  border-color: #333333 !important;
+
+  a,
+  .sidebar-section-link,
+  .sidebar-section-link-wrapper a,
+  .btn {
+    color: var(--gbfans-header-text) !important;
+
+    &:hover,
+    &.active {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: var(--gbfans-brand) !important;
+    }
+  }
+
+  .sidebar-section-header-text,
+  .sidebar-section-header-wrapper {
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-bottom-color: #333333 !important;
+  }
+
+  .sidebar-section-link-prefix-icon,
+  .sidebar-section-link-prefix .d-icon {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .sidebar-footer-wrapper,
+  .sidebar-footer-container,
+  .sidebar-sections__back-to-forum {
+    background: var(--gbfans-header-bg) !important;
+    color: var(--gbfans-header-text) !important;
+    border-top-color: #333333 !important;
+  }
+
+  .sidebar-sections {
+    background: transparent !important;
+
+    &::before,
+    &::after {
+      display: none !important;
+      content: none !important;
+    }
+  }
+}
