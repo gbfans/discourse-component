@@ -46,13 +46,18 @@
   display: none !important;
 }
 
-// ── Discourse header — sticky on mobile ──────────────────────────────────────
-// On mobile, Discourse's header is sticky below the GBFans chrome so the
-// search/chat/hamburger/avatar icons stay visible while scrolling.
+// ── Discourse header — fixed on mobile ───────────────────────────────────────
+// Discourse's JS dynamically manages header positioning, overriding sticky.
+// Use fixed positioning instead, placed below the GBFans sticky chrome.
+// --header-offset (118px) accounts for this in content positioning.
 .d-header-wrap {
-  position: sticky !important;
+  position: fixed !important;
   top: var(--gbfans-chrome-height) !important;
+  left: 0 !important;
+  right: 0 !important;
   width: 100% !important;
+  max-width: 1440px !important;
+  margin: 0 auto !important;
   height: auto !important;
   z-index: 1050 !important;
   pointer-events: auto !important;
