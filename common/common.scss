@@ -632,6 +632,24 @@ body:not(.mobile-view) {
     padding-left: 0 !important;
     border-right: 1px solid var(--gbfans-border);
   }
+
+  // Remove any gap between body edge and sidebar
+  #main-outlet-wrapper {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    gap: 0 !important;
+  }
+
+  #main-outlet {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    gap: 0 !important;
+  }
+
+  .sidebar-container {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
 }
 
 // ── Topic timeline sticky offset ─────────────────────────────────────────────
