@@ -118,10 +118,11 @@ body {
 .gbfans-top-bar__right {
   display: flex;
   align-items: center;
-  // Leave space on the right for Discourse's header icons (search, chat, profile)
-  // which are absolutely positioned in the top bar area via .d-header-wrap.
-  // Approx 3 icons × 40px = 120px.
-  margin-right: 120px;
+  // Reserve space for Discourse's header icons (search, chat, profile)
+  // absolutely positioned in the top bar via .d-header-wrap.
+  // 3 icons × 40px = 120px + 12px gap to match the Next.js site's
+  // spacing between social icons and the SearchTrigger button (px-5).
+  margin-right: 132px;
 }
 
 // ── Social links (shared between topbar and footer) ──────────────────────────
