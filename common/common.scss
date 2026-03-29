@@ -482,27 +482,17 @@ body {
   display: none !important;
 }
 
-// ── Issue 3: Position Discourse header icons in the GBFans top bar ───────────
-// Discourse's native .d-header-wrap is repositioned into the 40px top bar so
-// search, chat, notifications, and profile appear alongside social icons.
-.d-header-wrap {
-  position: absolute !important;
-  top: 0;
-  right: 0;
-  z-index: 1001;
-  height: 40px;
-  pointer-events: none;
-}
-
+// ── Discourse header: transparent overlay ────────────────────────────────────
+// The header sits inside .d-header-wrap which is inside the Ember app.
+// We make it transparent so our branded header shows through, and style
+// the Discourse icons (search, chat, profile, hamburger) white.
+// IMPORTANT: Do NOT reposition .d-header-wrap with position:absolute — it
+// removes it from normal flow and causes Discourse to re-render/duplicate
+// the header on route transitions (see git history commit c53f500).
 .d-header {
   background: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  height: 40px !important;
-}
-
-.d-header .d-header-icons {
-  pointer-events: auto;
 }
 
 // ── Discourse icons — white on dark background ───────────────────────────────
