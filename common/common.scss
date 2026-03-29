@@ -51,13 +51,6 @@
   --header-offset: var(--gbfans-total-chrome) !important;
 }
 
-// At narrow desktop widths, nav bar is hidden so total chrome = header only
-@media (max-width: 767px) {
-  :root {
-    --gbfans-total-chrome: var(--gbfans-chrome-height) !important;
-    --header-offset: var(--gbfans-chrome-height) !important;
-  }
-}
 
 // Discourse color overrides
 :root {
@@ -531,9 +524,8 @@ body {
   display: none !important;
 }
 
-// Reposition .d-header-wrap into the GBFans top bar area so Discourse's
-// native icons (search, chat, profile) appear on the dark header.
-body:not(.mobile-view) {
+// ── Wide desktop (≥768px): icons in top bar area ─────────────────────────────
+@media (min-width: 768px) {
   .d-header-wrap {
     position: absolute !important;
     top: 0 !important;
@@ -594,11 +586,71 @@ body:not(.mobile-view) {
       }
     }
   }
+}
 
-  // At narrow desktop widths, top bar is hidden so icons sit at top: 0
-  @media (max-width: 767px) {
-    .d-header-wrap {
-      top: 0 !important;
+// ── Narrow/mobile (≤767px): fixed header bar below GBFans chrome ─────────────
+@media (max-width: 767px) {
+  :root {
+    // Narrower chrome: border-top(2) + logo(~60) + nav-tile(8) = 70
+    --gbfans-chrome-height: 70px;
+    // Total: gbfans chrome(70) + Discourse header bar(~48) = 118
+    --gbfans-total-chrome: 118px;
+    --header-offset: 118px !important;
+  }
+
+  .gbfans-logo-header__inner {
+    padding: 0 12px;
+  }
+
+  .gbfans-logo-link {
+    padding: 12px 0;
+  }
+
+  .gbfans-nav-tile {
+    height: 8px;
+  }
+
+  #main-outlet-wrapper {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  #main-outlet {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .d-header-wrap {
+    position: fixed !important;
+    top: var(--gbfans-chrome-height) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    height: auto !important;
+    z-index: 1050 !important;
+    pointer-events: auto !important;
+  }
+
+  .d-header {
+    background: var(--gbfans-header-bg) !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+  }
+
+  .d-header-icons,
+  .header-sidebar-toggle {
+    .icon,
+    .header-dropdown-toggle,
+    .btn {
+      color: #ffffff !important;
+
+      .d-icon {
+        color: inherit;
+      }
     }
   }
 }
@@ -620,25 +672,15 @@ body:not(.mobile-view) {
 // Discourse Sidebar — visibility, dark theme, layout
 // =============================================================================
 
-// Force sidebar visible on wide desktop, toggle at narrow
-body:not(.mobile-view) {
-  // Wide desktop (≥768px): sidebar always visible, hamburger hidden
-  @media (min-width: 768px) {
-    .sidebar-wrapper {
-      display: block !important;
-      width: 280px !important;
-    }
-
-    .header-sidebar-toggle {
-      display: none !important;
-    }
+// ≥768px: sidebar always visible, hamburger hidden
+@media (min-width: 768px) {
+  .sidebar-wrapper {
+    display: block !important;
+    width: 280px !important;
   }
 
-  // Narrow desktop: hamburger visible (sidebar handled by gbfans-small-sidebar.gjs)
-  @media (max-width: 767px) {
-    .header-sidebar-toggle {
-      display: block !important;
-    }
+  .header-sidebar-toggle {
+    display: none !important;
   }
 }
 
@@ -736,19 +778,16 @@ body:not(.mobile-view) {
   max-height: calc(100vh - var(--gbfans-total-chrome)) !important;
 }
 
-body:not(.mobile-view) {
-  // Sidebar flush-left docking — only at wide desktop where sidebar is inline
-  @media (min-width: 768px) {
-    .sidebar-wrapper {
-      margin-left: 0 !important;
-      padding-left: 0 !important;
-      border-right: 1px solid var(--gbfans-border);
-    }
+@media (min-width: 768px) {
+  .sidebar-wrapper {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    border-right: 1px solid var(--gbfans-border);
+  }
 
-    .sidebar-container {
-      margin-left: 0 !important;
-      padding-left: 0 !important;
-    }
+  .sidebar-container {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
   }
 
   #main-outlet-wrapper {
