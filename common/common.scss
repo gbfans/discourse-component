@@ -95,6 +95,11 @@ body {
   background: var(--gbfans-header-bg);
   color: var(--gbfans-header-text);
   height: 40px;
+
+  // Hide entire top bar at narrow widths (matches Next.js max-md:hidden)
+  @media (max-width: 767px) {
+    display: none !important;
+  }
 }
 
 .gbfans-top-bar__inner {
@@ -111,11 +116,6 @@ body {
   font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
-
-  // Hidden on small screens (matches Next.js max-sm:hidden)
-  @media (max-width: 639px) {
-    display: none;
-  }
 
   a {
     color: var(--gbfans-header-text) !important;
@@ -589,12 +589,11 @@ body:not(.mobile-view) {
     }
   }
 
-  // At narrow desktop widths, move Discourse header into the logo row (2nd row)
-  // so the hamburger toggle sits beside the logo instead of behind social icons.
-  // Top bar is 40px, so top: 40px places it in the logo header area.
+  // At narrow desktop widths, top bar is hidden so icons sit at top: 0
+  // (the logo header row, which is now the first visible row).
   @media (max-width: 767px) {
     .d-header-wrap {
-      top: 40px !important;
+      top: 0 !important;
     }
   }
 }
