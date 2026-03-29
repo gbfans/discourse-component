@@ -14,7 +14,7 @@ export default class GbfansSmallSidebar extends Component {
   @service capabilities;
 
   get showSidebar() {
-    return this.site.narrowDesktopView || this.capabilities.isIpadOS;
+    return !this.site.mobileView && (this.site.narrowDesktopView || this.capabilities.isIpadOS);
   }
 
   <template>

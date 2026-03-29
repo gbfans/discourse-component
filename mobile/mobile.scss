@@ -9,7 +9,9 @@
 :root {
   // mobile: border-top(2) + logo header(~60) + nav-tile(8) = 70
   --gbfans-chrome-height: 70px;
-  --gbfans-total-chrome: 70px;
+  // total: gbfans chrome(70) + Discourse header bar(~48) = 118
+  --gbfans-total-chrome: 118px;
+  --header-offset: 118px !important;
 }
 
 // ── Logo header — mobile sizing ──────────────────────────────────────────────
@@ -26,20 +28,33 @@
   height: 8px;
 }
 
-// ── Content padding ──────────────────────────────────────────────────────────
+// ── Content containment ──────────────────────────────────────────────────────
 #main-outlet-wrapper {
   padding-left: 12px !important;
   padding-right: 12px !important;
+  overflow-x: hidden !important;
+  max-width: 100% !important;
 }
 
-// ── Discourse header — reset positioning for mobile ──────────────────────────
-// On mobile, Discourse's header stays in normal flow (no absolute positioning).
-// We give it a dark background so the white icons are visible.
+#main-outlet {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+// Hide the small-screen sidebar component on mobile (it's for narrow desktop only)
+.gbfans-small-sidebar {
+  display: none !important;
+}
+
+// ── Discourse header — sticky on mobile ──────────────────────────────────────
+// On mobile, Discourse's header is sticky below the GBFans chrome so the
+// search/chat/hamburger/avatar icons stay visible while scrolling.
 .d-header-wrap {
-  position: relative !important;
+  position: sticky !important;
+  top: var(--gbfans-chrome-height) !important;
   width: 100% !important;
   height: auto !important;
-  z-index: auto !important;
+  z-index: 1050 !important;
   pointer-events: auto !important;
 }
 
