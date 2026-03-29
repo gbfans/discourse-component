@@ -1,9 +1,9 @@
 // =============================================================================
 // GBFans Theme Component — Mobile Overrides
 // =============================================================================
-// Loaded only for mobile user agents. The component's this.site.mobileView
-// already hides the top bar, nav bar, and ad slot. These are supplemental
-// style adjustments for the elements that remain visible on mobile.
+// With viewport_based_mobile_mode enabled, Discourse loads this stylesheet
+// via <link media="(max-width: 39.99999rem)"> — roughly ≤640px.
+// The component's this.site.mobileView also changes based on viewport width.
 // =============================================================================
 
 :root {

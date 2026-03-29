@@ -714,15 +714,18 @@ body:not(.mobile-view) {
   }
 }
 
-// Hamburger panel and slide-in panels — dark theme
-.hamburger-panel,
-.menu-panel.slide-in {
-  background: var(--gbfans-header-bg) !important;
-  color: var(--gbfans-header-text) !important;
-  border-color: #333333 !important;
-
-  .panel-body {
+// Hamburger panel and slide-in panels — dark theme (narrow desktop only)
+// Scoped to ≤767px so the sidebar stays white/default on wide desktop.
+@media (max-width: 767px) {
+  .hamburger-panel,
+  .menu-panel.slide-in {
     background: var(--gbfans-header-bg) !important;
+    color: var(--gbfans-header-text) !important;
+    border-color: #333333 !important;
+
+    .panel-body {
+      background: var(--gbfans-header-bg) !important;
+    }
   }
 }
 
