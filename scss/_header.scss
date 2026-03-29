@@ -1,0 +1,60 @@
+// =============================================================================
+// Sticky Logo Header — matches Next.js sticky top-0 z-200
+// =============================================================================
+
+.gbfans-sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  border-top: 2px solid var(--gbfans-brand);
+}
+
+.gbfans-logo-header {
+  background: var(--gbfans-header-bg);
+}
+
+.gbfans-logo-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.gbfans-logo-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.gbfans-logo {
+  display: block;
+  width: 400px;
+  height: 58px;
+  object-fit: contain;
+
+  @media (max-width: 1023px) {
+    width: 350px;
+    height: 50px;
+  }
+
+  @media (max-width: 767px) {
+    width: 250px;
+    height: 36px;
+  }
+
+  @media (max-width: 639px) {
+    width: 200px;
+    height: 29px;
+  }
+}
+
+.gbfans-ad-slot {
+  width: 468px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.gbfans-nav-tile {
+  height: 16px;
+  background: var(--gbfans-nav-tile-url, url("https://gbfans.com/nav-tile.png")) repeat-x;
+}

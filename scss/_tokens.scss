@@ -1,0 +1,60 @@
+// =============================================================================
+// Design Tokens — matches Next.js globals.css @theme block
+// =============================================================================
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
+
+:root {
+  --gbfans-page-bg: #353535;
+  --gbfans-surface: #ffffff;
+  --gbfans-surface-alt: #f0f0f0;
+  --gbfans-surface-muted: #f4f4f4;
+  --gbfans-border: #dddddd;
+  --gbfans-border-light: #e3e3e3;
+  --gbfans-text: #000000;
+  --gbfans-text-secondary: #555555;
+  --gbfans-text-muted: #888888;
+  --gbfans-text-soft: #666666;
+  --gbfans-brand: #ed1c24;
+  --gbfans-brand-hover: #d12e2e;
+  --gbfans-header-bg: #000000;
+  --gbfans-header-text: #ffffff;
+  --gbfans-nav-bg: #f0f0f0;
+  --gbfans-nav-text: #000000;
+  --gbfans-nav-hover-bg: #dddddd;
+  --gbfans-nav-active: #b91c1c;
+  --gbfans-nav-border: #d6d6d6;
+  --gbfans-footer-branding-bg: #333333;
+  --gbfans-footer-copyright-bg: #2a2a2a;
+  --gbfans-footer-text: #cccccc;
+  --gbfans-footer-heading: #ffffff;
+  --gbfans-footer-input-bg: #222222;
+  --gbfans-footer-input-border: #444444;
+  --gbfans-shadow-panel: 0 15px 35px rgba(0, 0, 0, 0.25);
+
+  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(16) = 108
+  --gbfans-chrome-height: 108px;
+
+  // Total sticky chrome: sticky header(108) + nav bar(50) = 158
+  --gbfans-total-chrome: 158px;
+
+  // Override Discourse's header offset for sidebar/timeline sticky positioning.
+  --header-offset: var(--gbfans-total-chrome) !important;
+}
+
+// At narrow desktop widths, nav bar is hidden so total chrome = header only
+@media (max-width: 767px) {
+  :root {
+    --gbfans-total-chrome: var(--gbfans-chrome-height) !important;
+    --header-offset: var(--gbfans-chrome-height) !important;
+  }
+}
+
+// Discourse color overrides
+:root {
+  --primary: var(--gbfans-text) !important;
+  --secondary: var(--gbfans-surface) !important;
+  --tertiary: var(--gbfans-brand) !important;
+  --header_background: var(--gbfans-header-bg) !important;
+  --header_primary: var(--gbfans-header-text) !important;
+}

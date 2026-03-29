@@ -1,0 +1,120 @@
+// =============================================================================
+// Footer — matches site-footer.tsx exactly
+// =============================================================================
+
+.gbfans-footer-branding {
+  background-color: var(--gbfans-footer-branding-bg);
+  background-image: var(--gbfans-footer-bg-url, url("https://gbfans.com/Mini-Pufts-by-Stuart-Reeves-1.png"));
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  color: var(--gbfans-footer-text);
+}
+
+.gbfans-footer-branding__inner {
+  display: grid;
+  grid-template-columns: 27% 46% 27%;
+  gap: 0;
+  padding: 24px 32px 32px;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    padding: 24px 20px 32px;
+  }
+}
+
+.gbfans-footer-logo {
+  display: block;
+  max-width: 160px;
+  margin-top: 20px;
+}
+
+.gbfans-footer-description {
+  padding: 20px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--gbfans-footer-text);
+
+  @media (max-width: 767px) {
+    padding: 20px 0;
+  }
+}
+
+.gbfans-footer-join {
+  color: var(--gbfans-brand) !important;
+  font-weight: 700;
+  text-decoration: none !important;
+
+  &:hover {
+    color: var(--gbfans-brand-hover) !important;
+    text-decoration: underline !important;
+  }
+}
+
+.gbfans-footer-search-heading {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-transform: uppercase;
+  color: var(--gbfans-footer-heading);
+  margin-top: 20px;
+}
+
+.gbfans-footer-search {
+  position: relative;
+  margin-top: 20px;
+  border: 1px solid var(--gbfans-footer-input-border);
+  background: var(--gbfans-footer-input-bg);
+}
+
+.gbfans-footer-search__input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #eeeeee;
+  padding: 12px 40px 12px 16px;
+  font-size: 0.9375rem;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
+
+  &::placeholder {
+    color: #888888;
+  }
+
+  &:focus {
+    outline: 2px solid var(--gbfans-brand);
+    outline-offset: 2px;
+  }
+}
+
+.gbfans-footer-search__button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  color: var(--gbfans-footer-text);
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+
+  &:hover {
+    color: var(--gbfans-brand);
+  }
+}
+
+.gbfans-footer-copyright {
+  background: var(--gbfans-footer-copyright-bg);
+  color: #cccccc;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.gbfans-footer-copyright__inner {
+  padding: 20px 32px;
+
+  @media (max-width: 767px) {
+    padding: 20px;
+  }
+}
