@@ -626,32 +626,69 @@ body:not(.mobile-view) {
   }
 
   // Narrow desktop (≤767px): Discourse handles sidebar toggle, hamburger visible.
-  // Override Discourse's CSS variables inside sidebar scope so ALL child
-  // elements inherit dark theme colors automatically.
+  // Dark theme uses explicit element targeting (same as mobile.scss) because
+  // CSS variable overrides don't cascade through Discourse's compiled styles.
   @media (max-width: 767px) {
     .header-sidebar-toggle {
       display: block !important;
     }
 
+    // Dark background on ALL sidebar containers
     .sidebar-wrapper,
+    .sidebar-wrapper .sidebar-container,
+    .sidebar-wrapper .d-sidebar,
+    .sidebar-wrapper .sidebar-sections,
+    .sidebar-wrapper .sidebar-section-wrapper,
+    .sidebar-wrapper .sidebar-section-content,
+    .sidebar-wrapper .sidebar-custom-sections,
     .hamburger-panel,
-    .menu-panel.slide-in {
-      --secondary: #000000 !important;
-      --primary: #ffffff !important;
-      --primary-low: #333333 !important;
-      --primary-low-mid: #444444 !important;
-      --primary-medium: rgba(255, 255, 255, 0.5) !important;
-      --primary-high: rgba(255, 255, 255, 0.7) !important;
-      --highlight-bg: rgba(255, 255, 255, 0.1) !important;
-      --tertiary: var(--gbfans-brand) !important;
+    .hamburger-panel .panel-body,
+    .menu-panel.slide-in,
+    .menu-panel.slide-in .panel-body {
       background: var(--gbfans-header-bg) !important;
+      background-color: var(--gbfans-header-bg) !important;
       color: var(--gbfans-header-text) !important;
       border-color: #333333 !important;
     }
 
-    // Explicit overrides for elements that don't inherit CSS variables
+    // Text and link colors
     .sidebar-wrapper,
-    .hamburger-panel {
+    .hamburger-panel,
+    .menu-panel.slide-in {
+      a,
+      .sidebar-section-link,
+      .sidebar-section-link-wrapper a,
+      .sidebar-section-link-content-text,
+      .btn {
+        color: var(--gbfans-header-text) !important;
+
+        &:hover,
+        &.active {
+          background: rgba(255, 255, 255, 0.1) !important;
+          color: var(--gbfans-brand) !important;
+        }
+      }
+
+      .sidebar-section-header-text,
+      .sidebar-section-header-wrapper {
+        color: rgba(255, 255, 255, 0.7) !important;
+        border-bottom-color: #333333 !important;
+      }
+
+      .sidebar-section-link-prefix-icon,
+      .sidebar-section-link-prefix .d-icon {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      .sidebar-footer-wrapper,
+      .sidebar-footer-container,
+      .sidebar-sections__back-to-forum {
+        background: var(--gbfans-header-bg) !important;
+        background-color: var(--gbfans-header-bg) !important;
+        color: var(--gbfans-header-text) !important;
+        border-top-color: #333333 !important;
+      }
+
       .sidebar-sections {
         background: transparent !important;
 
@@ -662,10 +699,11 @@ body:not(.mobile-view) {
         }
       }
 
-      .sidebar-footer-wrapper,
-      .sidebar-footer-container {
-        background: var(--gbfans-header-bg) !important;
-        border-top-color: #333333 !important;
+      // Filter/search input inside sidebar
+      input, .sidebar-filter {
+        background: #222222 !important;
+        color: #eeeeee !important;
+        border-color: #444444 !important;
       }
     }
   }
