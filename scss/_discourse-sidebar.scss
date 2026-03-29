@@ -1,0 +1,144 @@
+// =============================================================================
+// Discourse Sidebar — visibility, dark theme, layout
+// =============================================================================
+
+// Force sidebar visible on wide desktop, toggle at narrow
+body:not(.mobile-view) {
+  // Wide desktop (≥768px): sidebar always visible, hamburger hidden
+  @media (min-width: 768px) {
+    .sidebar-wrapper {
+      display: block !important;
+      width: 280px !important;
+    }
+
+    .header-sidebar-toggle {
+      display: none !important;
+    }
+  }
+
+  // Narrow desktop: hamburger visible (sidebar handled by gbfans-small-sidebar.gjs)
+  @media (max-width: 767px) {
+    .header-sidebar-toggle {
+      display: block !important;
+    }
+  }
+}
+
+// ── Small-screen sidebar dark theme ──────────────────────────────────────────
+// Applied via .gbfans-small-sidebar wrapper class from the component,
+// not by fighting Discourse's native sidebar CSS.
+.gbfans-small-sidebar {
+  background: var(--gbfans-header-bg) !important;
+  color: var(--gbfans-header-text) !important;
+  border-color: #333333 !important;
+
+  .sidebar-container,
+  .d-sidebar,
+  .sidebar-sections,
+  .sidebar-section-wrapper,
+  .sidebar-section-content,
+  .sidebar-custom-sections {
+    background: transparent !important;
+    color: inherit !important;
+    border-color: #333333 !important;
+  }
+
+  a,
+  .sidebar-section-link,
+  .sidebar-section-link-wrapper a,
+  .sidebar-section-link-content-text,
+  .btn {
+    color: var(--gbfans-header-text) !important;
+
+    &:hover,
+    &.active {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: var(--gbfans-brand) !important;
+    }
+  }
+
+  .sidebar-section-header-text,
+  .sidebar-section-header-wrapper {
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-bottom-color: #333333 !important;
+  }
+
+  .sidebar-section-link-prefix-icon,
+  .sidebar-section-link-prefix .d-icon {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .sidebar-footer-wrapper,
+  .sidebar-footer-container,
+  .sidebar-sections__back-to-forum {
+    background: var(--gbfans-header-bg) !important;
+    color: var(--gbfans-header-text) !important;
+    border-top-color: #333333 !important;
+  }
+
+  .sidebar-sections {
+    &::before,
+    &::after {
+      display: none !important;
+      content: none !important;
+    }
+  }
+
+  input, .sidebar-filter {
+    background: #222222 !important;
+    color: #eeeeee !important;
+    border-color: #444444 !important;
+  }
+}
+
+// Hamburger panel and slide-in panels — dark theme
+.hamburger-panel,
+.menu-panel.slide-in {
+  background: var(--gbfans-header-bg) !important;
+  color: var(--gbfans-header-text) !important;
+  border-color: #333333 !important;
+
+  .panel-body {
+    background: var(--gbfans-header-bg) !important;
+  }
+}
+
+// ── Sidebar positioning ──────────────────────────────────────────────────────
+.sidebar-wrapper,
+.d-sidebar {
+  top: var(--gbfans-total-chrome) !important;
+  max-height: calc(100vh - var(--gbfans-total-chrome)) !important;
+}
+
+body:not(.mobile-view) {
+  // Sidebar flush-left docking — only at wide desktop where sidebar is inline
+  @media (min-width: 768px) {
+    .sidebar-wrapper {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      border-right: 1px solid var(--gbfans-border);
+    }
+
+    .sidebar-container {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+    }
+  }
+
+  #main-outlet-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  #main-outlet {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-left: 0 !important;
+  }
+}
+
+.topic-timeline {
+  top: var(--gbfans-total-chrome) !important;
+}

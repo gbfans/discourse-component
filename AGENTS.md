@@ -16,17 +16,31 @@ Theme components are installed via ZIP upload or GitHub URL in Discourse Admin �
 ├── about.json                         # Component metadata (component: true)
 ├── settings.yml                       # Admin-configurable settings
 ├── common/
-│   └── common.scss                    # Desktop + shared styles
+│   └── common.scss                    # Hub file — imports all scss/ partials
+├── scss/
+│   ├── _tokens.scss                   # Design tokens, CSS custom properties
+│   ├── _layout.scss                   # html/body, page layout (1440px)
+│   ├── _top-bar.scss                  # Top utility bar
+│   ├── _social.scss                   # Social icon links (topbar + footer)
+│   ├── _header.scss                   # Sticky logo header, nav tile
+│   ├── _navigation.scss              # Desktop nav bar + dropdowns
+│   ├── _footer.scss                   # Footer branding + copyright
+│   ├── _discourse-header.scss         # Discourse header repositioning
+│   ├── _discourse-sidebar.scss        # Sidebar visibility + dark theme
+│   └── _discourse-overrides.scss      # Typography, buttons, focus, misc
 ├── mobile/
 │   └── mobile.scss                    # Mobile-only style overrides
 └── javascripts/discourse/
     ├── connectors/
     │   ├── above-site-header/
     │   │   └── gbfans-header.gjs       # Header (top bar + logo + nav + style injection)
+    │   ├── before-main-outlet/
+    │   │   └── gbfans-small-sidebar.gjs # Small-screen sidebar (narrow desktop)
     │   └── below-footer/
     │       └── gbfans-footer.gjs       # Footer (branding + copyright)
     └── components/
         ├── gbfans-nav-desktop.gjs      # Desktop nav with hover dropdowns
+        ├── gbfans-small-sidebar.gjs    # Dark sidebar for narrow desktop
         └── gbfans-social-icons.gjs     # Shared social icon links
 ```
 
@@ -65,9 +79,10 @@ New icons must also be added to the `svg_icons` setting so Discourse includes th
 Components are rendered into Discourse via **connector directories** (not `api.renderInOutlet()`,
 which causes duplication on route transitions). Discourse auto-discovers connectors by directory name:
 
-| Outlet | Connector | Component | Purpose |
-|--------|-----------|-----------|--------|
+| Outlet | Connector | Purpose |
+|--------|-----------|--------|
 | `above-site-header` | `connectors/above-site-header/gbfans-header.gjs` | Header + style injection |
+| `before-main-outlet` | `connectors/before-main-outlet/gbfans-small-sidebar.gjs` | Dark sidebar at narrow desktop |
 | `below-footer` | `connectors/below-footer/gbfans-footer.gjs` | Footer with branding |
 
 There is **no initializer**. All logic lives in the connector files. Dynamic CSS custom

@@ -1,0 +1,63 @@
+// =============================================================================
+// Social Links — shared between topbar and footer
+// =============================================================================
+
+.gbfans-social {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gbfans-social__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  text-decoration: none !important;
+
+  svg,
+  .d-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+}
+
+// Topbar variant — hidden below 768px (matches Next.js max-md:hidden)
+.gbfans-social--topbar {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.gbfans-social--topbar .gbfans-social__link {
+  color: var(--gbfans-header-text) !important;
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+    color: var(--gbfans-brand-hover) !important;
+  }
+}
+
+// Footer variant
+.gbfans-social--footer {
+  gap: 12px;
+  margin-top: 16px;
+
+  .gbfans-social__link {
+    width: 32px;
+    height: 32px;
+    color: var(--gbfans-footer-text) !important;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+      color: var(--gbfans-footer-text) !important;
+    }
+  }
+}

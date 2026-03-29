@@ -1,0 +1,97 @@
+// =============================================================================
+// Discourse Header — reposition native icons into GBFans top bar
+// =============================================================================
+
+// Hide Discourse's default logo and topic breadcrumb (we have our own)
+.d-header .title {
+  display: none !important;
+}
+
+.d-header .extra-info-wrapper {
+  display: none !important;
+}
+
+// Reposition .d-header-wrap into the GBFans top bar area so Discourse's
+// native icons (search, chat, profile) appear on the dark header.
+body:not(.mobile-view) {
+  .d-header-wrap {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: auto !important;
+    height: 40px !important;
+    z-index: 1200 !important;
+    pointer-events: none;
+  }
+
+  .d-header {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    height: 40px !important;
+    min-height: unset !important;
+    pointer-events: none;
+
+    > .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 40px;
+      max-width: none;
+      padding: 0;
+    }
+  }
+
+  .d-header .panel {
+    pointer-events: auto;
+  }
+
+  .d-header-icons {
+    pointer-events: auto;
+
+    .icon,
+    .header-dropdown-toggle,
+    .btn {
+      color: #ffffff !important;
+      border-radius: 0;
+      height: 40px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: var(--gbfans-brand) !important;
+      }
+
+      .d-icon {
+        color: inherit;
+      }
+
+      img.avatar {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  // At narrow desktop widths, top bar is hidden so icons sit at top: 0
+  @media (max-width: 767px) {
+    .d-header-wrap {
+      top: 0 !important;
+    }
+  }
+}
+
+// Dropdown panels — light background (search, user menu, etc.)
+// Exclude .slide-in and .hamburger-panel so sidebar keeps its dark theme.
+.menu-panel:not(.slide-in):not(.hamburger-panel),
+.d-header .panel-body {
+  background: var(--gbfans-surface) !important;
+  border: 1px solid var(--gbfans-border) !important;
+  color: var(--gbfans-text) !important;
+  pointer-events: auto;
+
+  a { color: var(--gbfans-text) !important; }
+  .btn { color: var(--gbfans-text) !important; }
+}

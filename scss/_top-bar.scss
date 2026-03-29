@@ -1,0 +1,56 @@
+// =============================================================================
+// Top Bar — desktop only, component uses this.site.mobileView to hide on mobile
+// =============================================================================
+
+.gbfans-top-bar {
+  background: var(--gbfans-header-bg);
+  color: var(--gbfans-header-text);
+  height: 40px;
+
+  // Hide entire top bar at narrow widths (matches Next.js max-md:hidden)
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.gbfans-top-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding-left: 20px;
+}
+
+.gbfans-top-bar__cta {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  a {
+    color: var(--gbfans-header-text) !important;
+    text-decoration: none !important;
+
+    &:hover {
+      text-decoration: underline !important;
+      color: var(--gbfans-header-text) !important;
+    }
+  }
+}
+
+.gbfans-top-bar__right {
+  display: flex;
+  align-items: center;
+  // Reserve space for Discourse's header icons (search, chat, profile)
+  // absolutely positioned in the top bar via .d-header-wrap.
+  // 3 icons × 40px = 120px + 12px gap to match the Next.js site's
+  // spacing between social icons and the SearchTrigger button (px-5).
+  margin-right: 132px;
+
+  // At narrow widths, social icons are hidden and Discourse icons move
+  // to the logo row, so no reservation needed.
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
+}
