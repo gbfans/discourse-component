@@ -677,6 +677,42 @@ body {
   }
 }
 
+// ── Full-page chat reset ─────────────────────────────────────────────────────
+// When Discourse enters full-page chat, reset our header overrides so
+// the chat header (back arrow, channel name) works normally.
+body.has-full-page-chat {
+  .d-header-wrap {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    pointer-events: auto !important;
+  }
+
+  .d-header {
+    background: var(--gbfans-header-bg) !important;
+    height: auto !important;
+    min-height: unset !important;
+    pointer-events: auto !important;
+
+    > .wrap {
+      justify-content: flex-start;
+    }
+  }
+
+  .d-header .panel,
+  .d-header-icons {
+    pointer-events: auto !important;
+  }
+
+  // Hide the sidebar on full-page chat to maximize space
+  .sidebar-wrapper {
+    display: none !important;
+  }
+}
+
 // Dropdown panels — light background (search, user menu, etc.)
 // Exclude .slide-in and .hamburger-panel so sidebar keeps its dark theme.
 .menu-panel:not(.slide-in):not(.hamburger-panel),
