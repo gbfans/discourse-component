@@ -11,9 +11,10 @@ import Sidebar from "discourse/components/sidebar";
  */
 export default class GbfansSmallSidebar extends Component {
   @service site;
+  @service capabilities;
 
   get showSidebar() {
-    return this.site.narrowDesktopView;
+    return this.site.narrowDesktopView || this.capabilities.isIpadOS;
   }
 
   <template>
