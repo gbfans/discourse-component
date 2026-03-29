@@ -9,6 +9,7 @@
 :root {
   // mobile: border-top(2) + logo header(~60) + nav-tile(8) = 70
   --gbfans-chrome-height: 70px;
+  --gbfans-total-chrome: 70px;
 }
 
 // ── Logo header — mobile sizing ──────────────────────────────────────────────
@@ -31,9 +32,24 @@
   padding-right: 12px !important;
 }
 
+// ── Discourse header — reset positioning for mobile ──────────────────────────
+// On mobile, Discourse's header stays in normal flow (no absolute positioning).
+// We give it a dark background so the white icons are visible.
+.d-header-wrap {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  z-index: auto !important;
+  pointer-events: auto !important;
+}
+
+.d-header {
+  background: var(--gbfans-header-bg) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
 // ── Discourse header icons — white on dark header ────────────────────────────
-// On mobile, Discourse shows the hamburger/sidebar toggle natively.
-// We just need to make the icons white on our dark header background.
 .d-header-icons,
 .header-sidebar-toggle {
   .icon,

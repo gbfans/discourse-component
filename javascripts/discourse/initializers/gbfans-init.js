@@ -1,22 +1,21 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import GbfansHeader from "../components/gbfans-header";
-import GbfansFooter from "../components/gbfans-footer";
 
+/**
+ * GBFans theme initializer.
+ * Components are rendered via connector directories (not renderInOutlet)
+ * to prevent duplication on route transitions. This initializer only
+ * handles dynamic CSS injection and sidebar navigation.
+ */
 export default {
   name: "gbfans-theme",
 
   initialize() {
     withPluginApi((api) => {
-      // Register components in Discourse outlets
-      api.renderInOutlet("above-site-header", GbfansHeader);
-      api.renderInOutlet("below-footer", GbfansFooter);
-
-      // Guard: settings global may not exist if theme JS isn't compiled correctly
       const baseUrl =
         (typeof settings !== "undefined" && settings.gbfans_site_url) ||
         "https://gbfans.com";
 
-      // Avoid duplicates on re-initialization (route transitions can re-run this)
+      // Avoid duplicates on re-initialization
       const existing = document.getElementById("gbfans-dynamic-urls");
       if (existing) existing.remove();
 

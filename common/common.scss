@@ -38,11 +38,15 @@
   --gbfans-footer-input-border: #444444;
   --gbfans-shadow-panel: 0 15px 35px rgba(0, 0, 0, 0.25);
 
-  // Sticky offset — desktop: border-top(2) + logo header(~90) + nav-tile(16) = 108
+  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(16) = 108
   --gbfans-chrome-height: 108px;
 
-  // Override Discourse's header offset for sidebar/timeline sticky
-  --header-offset: var(--gbfans-chrome-height) !important;
+  // Total sticky chrome: sticky header(108) + nav bar(50) = 158
+  --gbfans-total-chrome: 158px;
+
+  // Override Discourse's header offset for sidebar/timeline sticky positioning.
+  // Must account for all sticky elements above the content area.
+  --header-offset: var(--gbfans-total-chrome) !important;
 }
 
 // ── Force light scheme ───────────────────────────────────────────────────────
@@ -177,7 +181,7 @@ body {
 .gbfans-sticky-header {
   position: sticky;
   top: 0;
-  z-index: 200;
+  z-index: 1100;
   border-top: 2px solid var(--gbfans-brand);
 }
 
@@ -239,7 +243,7 @@ body {
   border-bottom: 1px solid var(--gbfans-nav-border);
   position: sticky;
   top: var(--gbfans-chrome-height);
-  z-index: 100;
+  z-index: 1050;
 }
 
 .gbfans-nav-list {
@@ -300,7 +304,7 @@ body {
   left: 0;
   min-width: 220px;
   background: #333333;
-  z-index: 1000;
+  z-index: 1060;
   flex-direction: column;
   padding: 0;
   margin: 0;
@@ -482,58 +486,76 @@ body {
   display: none !important;
 }
 
-// ── Discourse header: transparent overlay ────────────────────────────────────
-// The header sits inside .d-header-wrap which is inside the Ember app.
-// We make it transparent so our branded header shows through, and style
-// the Discourse icons (search, chat, profile, hamburger) white.
-// IMPORTANT: Do NOT reposition .d-header-wrap with position:absolute — it
-// removes it from normal flow and causes Discourse to re-render/duplicate
-// the header on route transitions (see git history commit c53f500).
-.d-header {
-  background: transparent !important;
-  border-bottom: none !important;
-  box-shadow: none !important;
-}
-
-// ── Discourse icons — white on dark background ───────────────────────────────
-.d-header-icons {
-  .icon,
-  .header-dropdown-toggle,
-  .btn {
-    color: #ffffff !important;
-    border-radius: 0;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: var(--gbfans-brand) !important;
-    }
-
-    .d-icon {
-      color: inherit;
-    }
-
-    img.avatar {
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-  }
-}
-
-// ── Issue 4: Force sidebar visible on desktop ────────────────────────────────
-// Previously, hiding .header-sidebar-toggle meant users who toggled the sidebar
-// off could never restore it. Now we force the sidebar visible on desktop and
-// keep the toggle hidden since the sidebar is always shown.
+// ── Discourse header: reposition into top bar area (desktop) ─────────────────
+// The .d-header-wrap is repositioned into the GBFans top bar area so that
+// Discourse's native icons (search, chat, profile) appear on the dark header.
+// We use connector directories (not renderInOutlet) to prevent the duplication
+// bug that occurs on route transitions.
 body:not(.mobile-view) {
-  .sidebar-wrapper {
-    display: block !important;
-    width: 280px !important;
+  .d-header-wrap {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: auto !important;
+    height: 40px !important;
+    z-index: 1200 !important;
+    pointer-events: none;
   }
 
-  .header-sidebar-toggle {
-    display: none !important;
+  .d-header {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    height: 40px !important;
+    min-height: unset !important;
+    pointer-events: none;
+
+    > .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 40px;
+      max-width: none;
+      padding: 0;
+    }
+  }
+
+  .d-header .panel {
+    pointer-events: auto;
+  }
+
+  .d-header-icons {
+    pointer-events: auto;
+
+    .icon,
+    .header-dropdown-toggle,
+    .btn {
+      color: #ffffff !important;
+      border-radius: 0;
+      height: 40px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--gbfans-brand) !important;
+      }
+
+      .d-icon {
+        color: inherit;
+      }
+
+      img.avatar {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    }
   }
 }
 
-// ── Dropdown panels — light background ───────────────────────────────────────
+// ── Dropdown panels — light background (opened from header icons) ────────────
 .menu-panel,
 .d-header .panel-body {
   background: var(--gbfans-surface) !important;
@@ -543,6 +565,18 @@ body:not(.mobile-view) {
 
   a { color: var(--gbfans-text) !important; }
   .btn { color: var(--gbfans-text) !important; }
+}
+
+// ── Issue 4: Force sidebar visible on desktop ────────────────────────────────
+body:not(.mobile-view) {
+  .sidebar-wrapper {
+    display: block !important;
+    width: 280px !important;
+  }
+
+  .header-sidebar-toggle {
+    display: none !important;
+  }
 }
 
 // ── Hide Discourse's default footer ──────────────────────────────────────────
@@ -585,16 +619,31 @@ h1, h2, h3, h4, h5, h6,
   outline-offset: 2px;
 }
 
-// ── Sidebar sticky offset ────────────────────────────────────────────────────
+// ── Sidebar: dock flush left, offset below total chrome ──────────────────────
 .sidebar-wrapper,
 .d-sidebar {
-  top: var(--gbfans-chrome-height) !important;
-  max-height: calc(100vh - var(--gbfans-chrome-height)) !important;
+  top: var(--gbfans-total-chrome) !important;
+  max-height: calc(100vh - var(--gbfans-total-chrome)) !important;
+}
+
+body:not(.mobile-view) {
+  .sidebar-wrapper {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    border-right: 1px solid var(--gbfans-border);
+  }
 }
 
 // ── Topic timeline sticky offset ─────────────────────────────────────────────
 .topic-timeline {
-  top: var(--gbfans-chrome-height) !important;
+  top: var(--gbfans-total-chrome) !important;
+}
+
+// ── Main content: ensure it doesn't overlap sticky header ────────────────────
+#main-outlet-wrapper,
+#main-outlet {
+  position: relative;
+  z-index: 1;
 }
 
 // ── Composer ─────────────────────────────────────────────────────────────────
