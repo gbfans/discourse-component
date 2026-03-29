@@ -473,6 +473,17 @@ body {
 }
 
 // =============================================================================
+// DUPLICATE OUTLET GUARD
+// =============================================================================
+// If Discourse renders the outlet wrapper more than once (route transitions),
+// hide all but the first instance. This is a CSS safety net on top of the
+// JS singleton guard in the component.
+.above-site-header-outlet ~ .above-site-header-outlet,
+.below-footer-outlet ~ .below-footer-outlet {
+  display: none !important;
+}
+
+// =============================================================================
 // DISCOURSE OVERRIDES
 // =============================================================================
 
