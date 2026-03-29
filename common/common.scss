@@ -696,6 +696,11 @@ body:not(.mobile-view) {
   color: var(--gbfans-text);
 }
 
+// ── Mini profiler: reset position so it isn't pushed down by --header-offset ─
+.profiler-results {
+  top: 0 !important;
+}
+
 // ── Screen reader only utility ───────────────────────────────────────────────
 .sr-only {
   position: absolute;
