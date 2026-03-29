@@ -694,15 +694,35 @@ body {
 // Discourse Sidebar — visibility, dark theme, layout
 // =============================================================================
 
-// ≥768px: sidebar always visible, hamburger hidden
+// ≥768px: sidebar always visible, hamburger hidden, content flexes
 @media (min-width: 768px) {
   .sidebar-wrapper {
     display: block !important;
     width: 280px !important;
+    flex-shrink: 0 !important;
   }
 
   .header-sidebar-toggle {
     display: none !important;
+  }
+
+  // Ensure the sidebar+content parent is a flex row
+  #main-outlet-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  // Content fills remaining space after sidebar
+  #main-outlet {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    margin-left: 0 !important;
   }
 }
 
@@ -710,13 +730,74 @@ body {
 // Scoped to ≤767px so the sidebar stays white/default on wide desktop.
 @media (max-width: 767px) {
   .hamburger-panel,
-  .menu-panel.slide-in {
+  .menu-panel.slide-in,
+  .sidebar-wrapper,
+  .d-sidebar {
     background: var(--gbfans-header-bg) !important;
     color: var(--gbfans-header-text) !important;
     border-color: #333333 !important;
 
     .panel-body {
       background: var(--gbfans-header-bg) !important;
+      border: none !important;
+    }
+
+    .sidebar-container,
+    .sidebar-sections,
+    .sidebar-section-wrapper,
+    .sidebar-section-content,
+    .sidebar-custom-sections {
+      background: transparent !important;
+      color: inherit !important;
+    }
+
+    a,
+    .sidebar-section-link,
+    .sidebar-section-link-wrapper a,
+    .sidebar-section-link-content-text,
+    .btn {
+      color: var(--gbfans-header-text) !important;
+
+      &:hover,
+      &.active {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: var(--gbfans-brand) !important;
+      }
+    }
+
+    .sidebar-section-header-text,
+    .sidebar-section-header-wrapper {
+      color: rgba(255, 255, 255, 0.7) !important;
+      border-bottom-color: #333333 !important;
+    }
+
+    .sidebar-section-link-prefix-icon,
+    .sidebar-section-link-prefix .d-icon {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .sidebar-footer-wrapper,
+    .sidebar-footer-container,
+    .sidebar-sections__back-to-forum {
+      background: var(--gbfans-header-bg) !important;
+      color: var(--gbfans-header-text) !important;
+      border-top-color: #333333 !important;
+    }
+
+    .sidebar-sections {
+      background: transparent !important;
+
+      &::before,
+      &::after {
+        display: none !important;
+        content: none !important;
+      }
+    }
+
+    input, .sidebar-filter {
+      background: #222222 !important;
+      color: #eeeeee !important;
+      border-color: #444444 !important;
     }
   }
 }
@@ -738,20 +819,6 @@ body {
   .sidebar-container {
     margin-left: 0 !important;
     padding-left: 0 !important;
-  }
-
-  #main-outlet-wrapper {
-    flex: 1 1 0% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    padding-left: 0 !important;
-    margin-left: 0 !important;
-  }
-
-  #main-outlet {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    margin-left: 0 !important;
   }
 }
 
