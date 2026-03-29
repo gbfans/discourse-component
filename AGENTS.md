@@ -1,5 +1,9 @@
 # AGENTS.md — GBFans Discourse Component
 
+## CRITICAL: Design Parity
+
+This component replicates the GBFans Next.js site (gbfans.com) design. **Do NOT invent new visual elements.** Every spacing value, color, border, and layout choice must match the Next.js site. If it doesn't exist on gbfans.com, it doesn't belong here. Design changes to one must be reflected in the other — they stay in tandem.
+
 ## Architecture Overview
 
 This is a **Discourse theme component** (not a plugin). It provides a branded header and footer for the GBFans Discourse forum, pixel-perfect matching the design of the main Next.js site at gbfans.com.

@@ -2,6 +2,16 @@
 
 Read `AGENTS.md` first before making any changes. It contains the architecture, file structure, and conventions.
 
+## CRITICAL: Design Parity with Next.js Site
+
+This Discourse theme component MUST match the existing GBFans Next.js site (gbfans.com) pixel-for-pixel. We are NOT designing from scratch — we are replicating an existing design.
+
+- **Do NOT invent new visual elements** (dividers, borders, spacing) that don't exist on the Next.js site
+- **Do NOT add UI flourishes** (separators, hover effects, transitions) unless they match the Next.js site exactly
+- **Any change that impacts the overall style or design MUST reference the Next.js site** to verify it matches
+- **When in doubt, check the Next.js site first** — never guess at spacing, colors, or layout
+- If a design change is needed on the Discourse side, consider whether it also needs to be updated on the Next.js side — they must stay in tandem
+
 ## Rules
 
 - Every exported function/component needs a JSDoc comment
