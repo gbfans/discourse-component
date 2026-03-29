@@ -16,18 +16,13 @@ Theme components are installed via ZIP upload or GitHub URL in Discourse Admin �
 ├── mobile/
 │   └── mobile.scss                    # Mobile-only style overrides
 └── javascripts/discourse/
-    ├── initializers/
-    │   └── gbfans-init.js              # Dynamic CSS injection + sidebar section
     ├── connectors/
     │   ├── above-site-header/
-    │   │   └── gbfans-header.gjs       # Connector: renders header in outlet
+    │   │   └── gbfans-header.gjs       # Header (top bar + logo + nav + style injection)
     │   └── below-footer/
-    │       └── gbfans-footer.gjs       # Connector: renders footer in outlet
+    │       └── gbfans-footer.gjs       # Footer (branding + copyright)
     └── components/
-        ├── gbfans-header.gjs           # Header (top bar + logo + nav, responsive)
-        ├── gbfans-header-mobile.gjs    # Mobile-only header (logo only)
         ├── gbfans-nav-desktop.gjs      # Desktop nav with hover dropdowns
-        ├── gbfans-footer.gjs           # Footer (branding + copyright)
         └── gbfans-social-icons.gjs     # Shared social icon links
 ```
 
@@ -68,10 +63,12 @@ which causes duplication on route transitions). Discourse auto-discovers connect
 
 | Outlet | Connector | Component | Purpose |
 |--------|-----------|-----------|--------|
-| `above-site-header` | `connectors/above-site-header/gbfans-header.gjs` | `GbfansHeader` | Branded header above Discourse's native header |
-| `below-footer` | `connectors/below-footer/gbfans-footer.gjs` | `GbfansFooter` | Branded footer below Discourse's content |
+| `above-site-header` | `connectors/above-site-header/gbfans-header.gjs` | Header + style injection |
+| `below-footer` | `connectors/below-footer/gbfans-footer.gjs` | Footer with branding |
 
-The initializer (`gbfans-init.js`) only handles dynamic CSS injection and sidebar navigation — it does NOT register components.
+There is **no initializer**. All logic lives in the connector files. Dynamic CSS custom
+properties (image URLs) are injected from the header connector's constructor with an
+ID-based dedup guard. This matches the `discourse-header-submenus` architecture exactly.
 
 ## Responsive Behavior
 
