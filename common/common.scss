@@ -531,9 +531,6 @@ body:not(.mobile-view) {
 
   .d-header-icons {
     pointer-events: auto;
-    margin-left: 12px;
-    padding-left: 12px;
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
 
     .icon,
     .header-dropdown-toggle,
@@ -547,7 +544,6 @@ body:not(.mobile-view) {
       justify-content: center;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.15);
         color: var(--gbfans-brand) !important;
       }
 
