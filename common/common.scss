@@ -123,6 +123,12 @@ body {
   // 3 icons × 40px = 120px + 12px gap to match the Next.js site's
   // spacing between social icons and the SearchTrigger button (px-5).
   margin-right: 132px;
+
+  // At narrow widths, social icons are hidden and Discourse icons move
+  // to the logo row, so no reservation needed.
+  @media (max-width: 767px) {
+    margin-right: 0;
+  }
 }
 
 // ── Social links (shared between topbar and footer) ──────────────────────────
@@ -151,7 +157,13 @@ body {
   }
 }
 
-// Topbar variant
+// Topbar variant — hidden below 768px (matches Next.js max-md:hidden)
+.gbfans-social--topbar {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
 .gbfans-social--topbar .gbfans-social__link {
   color: var(--gbfans-header-text) !important;
   opacity: 0.85;
@@ -557,10 +569,20 @@ body:not(.mobile-view) {
       }
     }
   }
+
+  // At narrow desktop widths, move Discourse header into the logo row (2nd row)
+  // so the hamburger toggle sits beside the logo instead of behind social icons.
+  // Top bar is 40px, so top: 40px places it in the logo header area.
+  @media (max-width: 767px) {
+    .d-header-wrap {
+      top: 40px !important;
+    }
+  }
 }
 
 // ── Dropdown panels — light background (opened from header icons) ────────────
-.menu-panel,
+// Exclude .slide-in so the sidebar overlay keeps its dark theme at narrow widths.
+.menu-panel:not(.slide-in),
 .d-header .panel-body {
   background: var(--gbfans-surface) !important;
   border: 1px solid var(--gbfans-border) !important;
