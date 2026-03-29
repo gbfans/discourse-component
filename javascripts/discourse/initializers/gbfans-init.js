@@ -11,7 +11,14 @@ export default {
       api.renderInOutlet("above-site-header", GbfansHeader);
       api.renderInOutlet("below-footer", GbfansFooter);
 
-      const baseUrl = settings.gbfans_site_url || "https://gbfans.com";
+      // Guard: settings global may not exist if theme JS isn't compiled correctly
+      const baseUrl =
+        (typeof settings !== "undefined" && settings.gbfans_site_url) ||
+        "https://gbfans.com";
+
+      // Avoid duplicates on re-initialization (route transitions can re-run this)
+      const existing = document.getElementById("gbfans-dynamic-urls");
+      if (existing) existing.remove();
 
       // Inject dynamic image URLs as CSS custom properties
       const style = document.createElement("style");
@@ -26,7 +33,8 @@ export default {
       document.head.appendChild(style);
 
       // Build sidebar navigation from top-level nav_links
-      const navLinks = settings.nav_links || [];
+      const navLinks =
+        (typeof settings !== "undefined" && settings.nav_links) || [];
       const topLevel = navLinks.filter((l) => !l.parent);
 
       const sidebarLinks = topLevel.map((item) => {
@@ -62,7 +70,7 @@ export default {
               return "gbfans-navigation";
             }
             get title() {
-              return settings.brand_name || "GBFans";
+              return (typeof settings !== "undefined" && settings.brand_name) || "GBFans";
             }
             get links() {
               return links.map((LinkClass) => new LinkClass());

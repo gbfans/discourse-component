@@ -33,7 +33,7 @@
 
 // ── Discourse header icons — white on dark header ────────────────────────────
 // On mobile, Discourse shows the hamburger/sidebar toggle natively.
-// We make the icons white on our dark header background.
+// We just need to make the icons white on our dark header background.
 .d-header-icons,
 .header-sidebar-toggle {
   .icon,
@@ -45,19 +45,6 @@
       color: inherit;
     }
   }
-}
-
-// ── Reset Discourse header positioning for mobile ────────────────────────────
-// The common.scss repositions .d-header-wrap for the desktop top bar.
-// On mobile there is no top bar, so restore normal header behavior.
-.d-header-wrap {
-  position: relative !important;
-  height: auto;
-  pointer-events: auto;
-}
-
-.d-header {
-  height: auto !important;
 }
 
 // ── Mobile sidebar panel — dark theme ────────────────────────────────────────
