@@ -7,7 +7,7 @@ Read `AGENTS.md` first before making any changes. It contains the architecture, 
 - Every exported function/component needs a JSDoc comment
 - Match the Next.js site pixel-perfectly (see AGENTS.md and INSTRUCTIONS.md measurements)
 - Never use `@service siteSettings` — use the global `settings` object
-- Never use connector directories — use `api.renderInOutlet()`
+- Use connector directories for outlet rendering (not `api.renderInOutlet()` which causes duplication on route transitions)
 - Never use CSS `@media` queries for showing/hiding sections — use `this.site.mobileView`
 - Test in both desktop Discourse AND an actual mobile device
 - The component must work when installed via ZIP upload (no plugin dependencies)

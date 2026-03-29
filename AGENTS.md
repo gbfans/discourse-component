@@ -17,7 +17,12 @@ Theme components are installed via ZIP upload or GitHub URL in Discourse Admin �
 │   └── mobile.scss                    # Mobile-only style overrides
 └── javascripts/discourse/
     ├── initializers/
-    │   └── gbfans-init.js              # Registers components into Discourse outlets
+    │   └── gbfans-init.js              # Dynamic CSS injection + sidebar section
+    ├── connectors/
+    │   ├── above-site-header/
+    │   │   └── gbfans-header.gjs       # Connector: renders header in outlet
+    │   └── below-footer/
+    │       └── gbfans-footer.gjs       # Connector: renders footer in outlet
     └── components/
         ├── gbfans-header.gjs           # Header (top bar + logo + nav, responsive)
         ├── gbfans-header-mobile.gjs    # Mobile-only header (logo only)
@@ -56,14 +61,17 @@ Uses Font Awesome icons via Discourse's `icon` helper (imported from `discourse/
 
 New icons must also be added to the `svg_icons` setting so Discourse includes them in the icon sprite.
 
-## Plugin Outlets
+## Connector Outlets
 
-Components are injected into Discourse via `api.renderInOutlet()`:
+Components are rendered into Discourse via **connector directories** (not `api.renderInOutlet()`,
+which causes duplication on route transitions). Discourse auto-discovers connectors by directory name:
 
-| Outlet | Component | Purpose |
-|--------|-----------|--------|
-| `above-site-header` | `GbfansHeader` | Branded header above Discourse's native header |
-| `below-footer` | `GbfansFooter` | Branded footer below Discourse's content |
+| Outlet | Connector | Component | Purpose |
+|--------|-----------|-----------|--------|
+| `above-site-header` | `connectors/above-site-header/gbfans-header.gjs` | `GbfansHeader` | Branded header above Discourse's native header |
+| `below-footer` | `connectors/below-footer/gbfans-footer.gjs` | `GbfansFooter` | Branded footer below Discourse's content |
+
+The initializer (`gbfans-init.js`) only handles dynamic CSS injection and sidebar navigation — it does NOT register components.
 
 ## Responsive Behavior
 
@@ -109,7 +117,7 @@ On mobile, the sidebar toggle is visible and Discourse's native hamburger behavi
 
 - **Don't use `@service siteSettings`** — use the global `settings` object
 - **Don't use CSS media queries for showing/hiding sections** — use `this.site.mobileView`
-- **Don't use connector directories** — use `api.renderInOutlet()` in the initializer
+- **Don't use `api.renderInOutlet()`** — use connector directories instead (prevents duplication on route transitions)
 - **Don't use `iconNode()`** — use `icon()` helper imported from `discourse/helpers/d-icon`
 - **Mobile SCSS only loads for mobile user agents** — Chrome responsive mode won't trigger it
 - **New FA icons must be in the `svg_icons` setting** — otherwise they won't appear in Discourse's icon sprite
