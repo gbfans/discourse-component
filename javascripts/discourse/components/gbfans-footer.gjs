@@ -1,8 +1,35 @@
 import Component from "@glimmer/component";
 import GbfansSocialIcons from "./gbfans-social-icons";
 
+/** Module-level singleton guard for footer. */
+let footerMountedCount = 0;
+
 /** Site footer with branding, description, search, and copyright. */
 export default class GbfansFooter extends Component {
+  _isMounted = false;
+
+  constructor() {
+    super(...arguments);
+    footerMountedCount++;
+    this._isMounted = true;
+  }
+
+  willDestroy() {
+    super.willDestroy(...arguments);
+    if (this._isMounted) {
+      footerMountedCount--;
+      this._isMounted = false;
+    }
+  }
+
+  get isDuplicate() {
+    return footerMountedCount > 1 && !this._isFirst;
+  }
+
+  _isFirst = (() => {
+    return footerMountedCount <= 1;
+  })();
+
   get siteUrl() {
     return settings.gbfans_site_url || "https://gbfans.com";
   }
@@ -29,42 +56,44 @@ export default class GbfansFooter extends Component {
   }
 
   <template>
-    <footer class="gbfans-footer" role="contentinfo">
-      <div class="gbfans-footer-branding">
-        <div class="gbfans-footer-branding__inner">
-          <div>
-            <img src="{{this.footerLogoUrl}}" alt="{{this.brandName}}" class="gbfans-footer-logo" />
-            <GbfansSocialIcons @variant="gbfans-social--footer" />
-          </div>
+    {{#unless this.isDuplicate}}
+      <footer class="gbfans-footer" role="contentinfo">
+        <div class="gbfans-footer-branding">
+          <div class="gbfans-footer-branding__inner">
+            <div>
+              <img src="{{this.footerLogoUrl}}" alt="{{this.brandName}}" class="gbfans-footer-logo" />
+              <GbfansSocialIcons @variant="gbfans-social--footer" />
+            </div>
 
-          <div class="gbfans-footer-description">
-            {{this.description}}
-            <strong>
-              <a href="{{this.joinUrl}}" class="gbfans-footer-join">JOIN US!</a>
-            </strong>
-          </div>
+            <div class="gbfans-footer-description">
+              {{this.description}}
+              <strong>
+                <a href="{{this.joinUrl}}" class="gbfans-footer-join">JOIN US!</a>
+              </strong>
+            </div>
 
-          <div>
-            <span class="gbfans-footer-search-heading">Search Something</span>
-            <form class="gbfans-footer-search" role="search" action="{{this.siteUrl}}/" method="get">
-              <label for="gbfans-footer-search" class="sr-only">Search {{this.brandName}} content</label>
-              <input id="gbfans-footer-search" name="s" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
-              <button type="submit" aria-label="Search" class="gbfans-footer-search__button">&#128269;</button>
-            </form>
+            <div>
+              <span class="gbfans-footer-search-heading">Search Something</span>
+              <form class="gbfans-footer-search" role="search" action="{{this.siteUrl}}/" method="get">
+                <label for="gbfans-footer-search" class="sr-only">Search {{this.brandName}} content</label>
+                <input id="gbfans-footer-search" name="s" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
+                <button type="submit" aria-label="Search" class="gbfans-footer-search__button">&#128269;</button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="gbfans-footer-copyright">
-        <div class="gbfans-footer-copyright__inner">
-          &copy; 2000 - {{this.currentYear}} {{this.brandName}} LLC. All rights reserved. Created by AJ Quick
-          <br />
-          &ldquo;GBFans.com&rdquo; is a registered Trademark of {{this.brandName}} LLC.
-          <br />
-          &ldquo;Ghostbusters&rdquo; and &ldquo;Ghost-Design&rdquo; are
-          registered Trademarks of Columbia Pictures Industries Inc.
+        <div class="gbfans-footer-copyright">
+          <div class="gbfans-footer-copyright__inner">
+            &copy; 2000 - {{this.currentYear}} {{this.brandName}} LLC. All rights reserved. Created by AJ Quick
+            <br />
+            &ldquo;GBFans.com&rdquo; is a registered Trademark of {{this.brandName}} LLC.
+            <br />
+            &ldquo;Ghostbusters&rdquo; and &ldquo;Ghost-Design&rdquo; are
+            registered Trademarks of Columbia Pictures Industries Inc.
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    {{/unless}}
   </template>
 }
