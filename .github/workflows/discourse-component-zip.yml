@@ -1,0 +1,26 @@
+name: Build Component ZIP
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ZIP
+        run: |
+          zip -r gbfans-header-footer.zip \
+            about.json \
+            settings.yml \
+            common/ \
+            mobile/ \
+            javascripts/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gbfans-header-footer
+          path: gbfans-header-footer.zip
