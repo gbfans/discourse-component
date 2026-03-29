@@ -571,7 +571,9 @@ body:not(.mobile-view) {
   .btn { color: var(--gbfans-text) !important; }
 }
 
-// ── Issue 4: Force sidebar visible on desktop ────────────────────────────────
+// ── Issue 4: Force sidebar visible on wide desktop ───────────────────────────
+// Above 767px (non-mobile-view): sidebar always visible, hamburger hidden.
+// At ≤767px: sidebar collapses, hamburger toggle restored so users can open it.
 body:not(.mobile-view) {
   .sidebar-wrapper {
     display: block !important;
@@ -580,6 +582,81 @@ body:not(.mobile-view) {
 
   .header-sidebar-toggle {
     display: none !important;
+  }
+
+  @media (max-width: 767px) {
+    .sidebar-wrapper {
+      display: none !important;
+      width: auto !important;
+    }
+
+    .header-sidebar-toggle {
+      display: block !important;
+    }
+
+    // Dark theme for sidebar when it appears as a slide-in panel
+    .sidebar-wrapper.visible,
+    .sidebar-wrapper[data-visible="true"] {
+      display: block !important;
+      background: var(--gbfans-header-bg) !important;
+      color: var(--gbfans-header-text) !important;
+    }
+  }
+}
+
+// ── Sidebar slide-in panel dark theme (narrow desktop viewports) ─────────────
+@media (max-width: 767px) {
+  body:not(.mobile-view) {
+    .hamburger-panel,
+    .menu-panel.slide-in,
+    .d-sidebar,
+    .sidebar-wrapper {
+      background: var(--gbfans-header-bg) !important;
+      color: var(--gbfans-header-text) !important;
+      border-color: #333333 !important;
+
+      a,
+      .sidebar-section-link,
+      .sidebar-section-link-wrapper a,
+      .btn {
+        color: var(--gbfans-header-text) !important;
+
+        &:hover,
+        &.active {
+          background: rgba(255, 255, 255, 0.1) !important;
+          color: var(--gbfans-brand) !important;
+        }
+      }
+
+      .sidebar-section-header-text,
+      .sidebar-section-header-wrapper {
+        color: rgba(255, 255, 255, 0.7) !important;
+        border-bottom-color: #333333 !important;
+      }
+
+      .sidebar-section-link-prefix-icon,
+      .sidebar-section-link-prefix .d-icon {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      .sidebar-footer-wrapper,
+      .sidebar-footer-container,
+      .sidebar-sections__back-to-forum {
+        background: var(--gbfans-header-bg) !important;
+        color: var(--gbfans-header-text) !important;
+        border-top-color: #333333 !important;
+      }
+
+      .sidebar-sections {
+        background: transparent !important;
+
+        &::before,
+        &::after {
+          display: none !important;
+          content: none !important;
+        }
+      }
+    }
   }
 }
 
