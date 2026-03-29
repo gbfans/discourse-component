@@ -118,6 +118,10 @@ body {
 .gbfans-top-bar__right {
   display: flex;
   align-items: center;
+  // Leave space on the right for Discourse's header icons (search, chat, profile)
+  // which are absolutely positioned in the top bar area via .d-header-wrap.
+  // Approx 3 icons × 40px = 120px.
+  margin-right: 120px;
 }
 
 // ── Social links (shared between topbar and footer) ──────────────────────────
@@ -633,17 +637,20 @@ body:not(.mobile-view) {
     border-right: 1px solid var(--gbfans-border);
   }
 
-  // Remove any gap between body edge and sidebar
+  // Parent is the constraining factor (body max-width: 1440px).
+  // main-outlet-wrapper must fill it, not have its own narrower width.
   #main-outlet-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
     padding-left: 0 !important;
     margin-left: 0 !important;
-    gap: 0 !important;
   }
 
+  // Balance padding: left side has sidebar border, right side needs matching padding
   #main-outlet {
-    padding-left: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
     margin-left: 0 !important;
-    gap: 0 !important;
   }
 
   .sidebar-container {
