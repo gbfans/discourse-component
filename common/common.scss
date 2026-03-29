@@ -645,7 +645,12 @@ body:not(.mobile-view) {
 // ── Small-screen sidebar dark theme ──────────────────────────────────────────
 // Applied via .gbfans-small-sidebar wrapper class from the component,
 // not by fighting Discourse's native sidebar CSS.
+// Hidden at ≥768px where the inline sidebar is forced visible (white theme).
 .gbfans-small-sidebar {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+
   background: var(--gbfans-header-bg) !important;
   color: var(--gbfans-header-text) !important;
   border-color: #333333 !important;
