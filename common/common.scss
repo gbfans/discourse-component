@@ -49,6 +49,14 @@
   --header-offset: var(--gbfans-total-chrome) !important;
 }
 
+// At narrow desktop widths, nav bar is hidden so total chrome = header only
+@media (max-width: 767px) {
+  :root {
+    --gbfans-total-chrome: var(--gbfans-chrome-height) !important;
+    --header-offset: var(--gbfans-chrome-height) !important;
+  }
+}
+
 // ── Force light scheme ───────────────────────────────────────────────────────
 html {
   color-scheme: light !important;
@@ -103,6 +111,11 @@ body {
   font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
+
+  // Hidden on small screens (matches Next.js max-sm:hidden)
+  @media (max-width: 639px) {
+    display: none;
+  }
 
   a {
     color: var(--gbfans-header-text) !important;
@@ -261,6 +274,12 @@ body {
   position: sticky;
   top: var(--gbfans-chrome-height);
   z-index: 1050;
+
+  // Hide desktop nav at narrow widths where it wraps awkwardly.
+  // Matches Next.js max-md:hidden on the desktop navigation.
+  @media (max-width: 767px) {
+    display: none !important;
+  }
 }
 
 .gbfans-nav-list {
@@ -581,8 +600,8 @@ body:not(.mobile-view) {
 }
 
 // ── Dropdown panels — light background (opened from header icons) ────────────
-// Exclude .slide-in so the sidebar overlay keeps its dark theme at narrow widths.
-.menu-panel:not(.slide-in),
+// Exclude .slide-in and .hamburger-panel so sidebar keeps its dark theme.
+.menu-panel:not(.slide-in):not(.hamburger-panel),
 .d-header .panel-body {
   background: var(--gbfans-surface) !important;
   border: 1px solid var(--gbfans-border) !important;
@@ -593,82 +612,47 @@ body:not(.mobile-view) {
   .btn { color: var(--gbfans-text) !important; }
 }
 
-// ── Issue 4: Force sidebar visible on wide desktop ───────────────────────────
-// Above 767px (non-mobile-view): sidebar always visible, hamburger hidden.
-// At ≤767px: sidebar collapses, hamburger toggle restored so users can open it.
+// ── Issue 4: Sidebar — force visible on wide desktop, toggle at narrow ───────
 body:not(.mobile-view) {
-  .sidebar-wrapper {
-    display: block !important;
-    width: 280px !important;
-  }
-
-  .header-sidebar-toggle {
-    display: none !important;
-  }
-
-  @media (max-width: 767px) {
+  // Wide desktop (≥768px): sidebar always visible, hamburger hidden
+  @media (min-width: 768px) {
     .sidebar-wrapper {
-      display: none !important;
-      width: auto !important;
+      display: block !important;
+      width: 280px !important;
     }
 
+    .header-sidebar-toggle {
+      display: none !important;
+    }
+  }
+
+  // Narrow desktop (≤767px): Discourse handles sidebar toggle, hamburger visible.
+  // Override Discourse's CSS variables inside sidebar scope so ALL child
+  // elements inherit dark theme colors automatically.
+  @media (max-width: 767px) {
     .header-sidebar-toggle {
       display: block !important;
     }
 
-    // Dark theme for sidebar when it appears as a slide-in panel
-    .sidebar-wrapper.visible,
-    .sidebar-wrapper[data-visible="true"] {
-      display: block !important;
-      background: var(--gbfans-header-bg) !important;
-      color: var(--gbfans-header-text) !important;
-    }
-  }
-}
-
-// ── Sidebar slide-in panel dark theme (narrow desktop viewports) ─────────────
-@media (max-width: 767px) {
-  body:not(.mobile-view) {
+    .sidebar-wrapper,
     .hamburger-panel,
-    .menu-panel.slide-in,
-    .d-sidebar,
-    .sidebar-wrapper {
+    .menu-panel.slide-in {
+      --secondary: #000000 !important;
+      --primary: #ffffff !important;
+      --primary-low: #333333 !important;
+      --primary-low-mid: #444444 !important;
+      --primary-medium: rgba(255, 255, 255, 0.5) !important;
+      --primary-high: rgba(255, 255, 255, 0.7) !important;
+      --highlight-bg: rgba(255, 255, 255, 0.1) !important;
+      --tertiary: var(--gbfans-brand) !important;
       background: var(--gbfans-header-bg) !important;
       color: var(--gbfans-header-text) !important;
       border-color: #333333 !important;
+    }
 
-      a,
-      .sidebar-section-link,
-      .sidebar-section-link-wrapper a,
-      .btn {
-        color: var(--gbfans-header-text) !important;
-
-        &:hover,
-        &.active {
-          background: rgba(255, 255, 255, 0.1) !important;
-          color: var(--gbfans-brand) !important;
-        }
-      }
-
-      .sidebar-section-header-text,
-      .sidebar-section-header-wrapper {
-        color: rgba(255, 255, 255, 0.7) !important;
-        border-bottom-color: #333333 !important;
-      }
-
-      .sidebar-section-link-prefix-icon,
-      .sidebar-section-link-prefix .d-icon {
-        color: rgba(255, 255, 255, 0.5) !important;
-      }
-
-      .sidebar-footer-wrapper,
-      .sidebar-footer-container,
-      .sidebar-sections__back-to-forum {
-        background: var(--gbfans-header-bg) !important;
-        color: var(--gbfans-header-text) !important;
-        border-top-color: #333333 !important;
-      }
-
+    // Explicit overrides for elements that don't inherit CSS variables
+    .sidebar-wrapper,
+    .hamburger-panel {
       .sidebar-sections {
         background: transparent !important;
 
@@ -677,6 +661,12 @@ body:not(.mobile-view) {
           display: none !important;
           content: none !important;
         }
+      }
+
+      .sidebar-footer-wrapper,
+      .sidebar-footer-container {
+        background: var(--gbfans-header-bg) !important;
+        border-top-color: #333333 !important;
       }
     }
   }
@@ -730,10 +720,18 @@ h1, h2, h3, h4, h5, h6,
 }
 
 body:not(.mobile-view) {
-  .sidebar-wrapper {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    border-right: 1px solid var(--gbfans-border);
+  // Sidebar flush-left docking — only at wide desktop where sidebar is inline
+  @media (min-width: 768px) {
+    .sidebar-wrapper {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      border-right: 1px solid var(--gbfans-border);
+    }
+
+    .sidebar-container {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+    }
   }
 
   // Parent is the constraining factor (body max-width: 1440px).
@@ -750,11 +748,6 @@ body:not(.mobile-view) {
     padding-left: 20px !important;
     padding-right: 20px !important;
     margin-left: 0 !important;
-  }
-
-  .sidebar-container {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
   }
 }
 
