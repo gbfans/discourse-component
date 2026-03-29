@@ -621,54 +621,30 @@ body {
     overflow-x: hidden !important;
   }
 
-  // Icons sit ON the logo header row (absolute positioned, same as wide
-  // desktop but at top: 0 since the top bar is hidden at this width).
+  // Let Discourse handle its own header layout at narrow widths.
+  // Just give it a dark background so icons are visible against black.
+  // Do NOT absolute-position or constrain height — that hides icons.
   .d-header-wrap {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    width: auto !important;
-    height: 40px !important;
-    z-index: 1200 !important;
-    pointer-events: none;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    z-index: 1050 !important;
+    pointer-events: auto !important;
   }
 
   .d-header {
-    background: transparent !important;
+    background: var(--gbfans-header-bg) !important;
     border-bottom: none !important;
     box-shadow: none !important;
-    height: 40px !important;
-    min-height: unset !important;
-    pointer-events: none;
-
-    > .wrap {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      height: 40px;
-      max-width: none;
-      padding: 0;
-    }
-  }
-
-  .d-header .panel {
-    pointer-events: auto;
+    pointer-events: auto !important;
   }
 
   .d-header-icons,
   .header-sidebar-toggle {
-    pointer-events: auto;
-
     .icon,
     .header-dropdown-toggle,
     .btn {
       color: #ffffff !important;
-      height: 40px;
-      width: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
       .d-icon {
         color: inherit;
