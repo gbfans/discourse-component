@@ -584,10 +584,16 @@ body {
       }
 
       img.avatar {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         border: 1px solid rgba(255, 255, 255, 0.3);
       }
+    }
+
+    // Profile button: match Next.js px-2 spacing (8px each side) around the avatar
+    .header-dropdown-toggle.current-user {
+      width: auto;
+      padding: 0 8px;
     }
   }
 }
