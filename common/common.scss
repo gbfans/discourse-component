@@ -592,9 +592,10 @@ body {
 @media (max-width: 767px) {
   :root {
     // Narrower chrome: border-top(2) + logo(~60) + nav-tile(8) = 70
+    // Total includes Discourse header bar (~48px) below nav tile
     --gbfans-chrome-height: 70px;
-    --gbfans-total-chrome: 70px;
-    --header-offset: 70px !important;
+    --gbfans-total-chrome: 118px;
+    --header-offset: 118px !important;
   }
 
   .gbfans-logo-header__inner {
@@ -621,11 +622,14 @@ body {
     overflow-x: hidden !important;
   }
 
-  // Let Discourse handle its own header layout at narrow widths.
-  // Just give it a dark background so icons are visible against black.
-  // Do NOT absolute-position or constrain height — that hides icons.
+  // Discourse header becomes a dark bar visually attached below the
+  // sticky header (below nav tile). Absolute-positioned relative to
+  // the sticky header so it scrolls with it.
   .d-header-wrap {
-    position: relative !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100% !important;
     height: auto !important;
     z-index: 1050 !important;
