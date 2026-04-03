@@ -1,0 +1,10 @@
+{{#if @outletArgs.condition}}
+  <div class="gbfans-cyclotron-loader">
+    <div class="gbfans-cyclotron-spinner" role="status" aria-label="Loading">
+      <div class="gbfans-cyclotron-spinner__rotor"></div>
+      <span class="sr-only">Loading…</span>
+    </div>
+  </div>
+{{else}}
+  {{yield}}
+{{/if}}
