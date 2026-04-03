@@ -957,3 +957,76 @@ h1, h2, h3, h4, h5, h6,
   white-space: nowrap;
   border-width: 0;
 }
+
+// =============================================================================
+// Custom Loading Spinner — Cyclotron (matches Next.js CyclotronSpinner)
+// =============================================================================
+// Four circular "lenses" revealed via CSS mask with a sweeping red
+// conic-gradient rotor that accelerates from slow to full speed,
+// mimicking the Ghostbusters proton pack cyclotron charge-up.
+// =============================================================================
+
+@keyframes gbfans-cyclotron-spin-up {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+
+@keyframes gbfans-cyclotron-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gbfans-cyclotron-loader {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.gbfans-cyclotron-spinner {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  background: #000;
+
+  // Four circular lens cutouts via CSS mask
+  -webkit-mask-image:
+    radial-gradient(12% circle at 12% 12%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 88% 12%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 83% 88%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 17% 88%, black 98%, transparent 100%);
+  mask-image:
+    radial-gradient(12% circle at 12% 12%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 88% 12%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 83% 88%, black 98%, transparent 100%),
+    radial-gradient(12% circle at 17% 88%, black 98%, transparent 100%);
+
+  &__rotor {
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      transparent 55%,
+      rgba(239, 68, 68, 0.4) 75%,
+      #ef4444 85%,
+      #ff1a1a 100%
+    );
+
+    // Spin-up plays once (3s ease-in), then continuous fast spin takes over
+    animation:
+      gbfans-cyclotron-spin-up 3s cubic-bezier(0.4, 0, 1, 1) 1 forwards,
+      gbfans-cyclotron-spin 0.4s linear 3s infinite;
+  }
+}
