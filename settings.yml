@@ -1,7 +1,7 @@
 enable_cyclotron_spinner:
-  default: true
+  default: false
   type: bool
-  description: "Replace Discourse's default loading spinner with the GBFans cyclotron animation. Disable to use the standard spinner."
+  description: "Replace Discourse's default loading spinner with the GBFans cyclotron animation. When disabled, Discourse's native loading indicator (configured in site settings) is used."
 
 gbfans_site_url:
   default: "https://gbfans.com"

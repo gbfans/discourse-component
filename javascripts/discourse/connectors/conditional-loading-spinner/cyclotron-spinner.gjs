@@ -1,8 +1,11 @@
 import Component from "@glimmer/component";
+import LoadingSpinner from "discourse/components/loading-spinner";
 
 /**
  * Replaces Discourse's default loading spinner with the GBFans cyclotron
  * animation. Controlled by the enable_cyclotron_spinner theme setting.
+ * When disabled, falls back to Discourse's native LoadingSpinner which
+ * respects the site-wide loading_indicator setting (spinner or dots).
  */
 export default class CyclotronSpinner extends Component {
   <template>
@@ -15,7 +18,7 @@ export default class CyclotronSpinner extends Component {
           </div>
         </div>
       {{else}}
-        <div class="spinner"></div>
+        <LoadingSpinner />
       {{/if}}
     {{else}}
       {{yield}}
