@@ -319,11 +319,6 @@ body {
   }
 }
 
-// First item (News) uses active color — matches Next.js i===0 logic
-.gbfans-nav-item--active .gbfans-nav-item__link {
-  color: var(--gbfans-nav-active) !important;
-}
-
 // Forum link — current page indicator
 .gbfans-nav-item__link--forum {
   color: var(--gbfans-nav-active) !important;

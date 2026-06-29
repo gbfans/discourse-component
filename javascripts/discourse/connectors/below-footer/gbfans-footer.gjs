@@ -44,6 +44,10 @@ export default class GbfansFooterConnector extends Component {
     return gbfansMainSiteUrl(path);
   }
 
+  get searchUrl() {
+    return gbfansMainSiteUrl("/search");
+  }
+
   get currentYear() {
     return new Date().getFullYear();
   }
@@ -66,9 +70,9 @@ export default class GbfansFooterConnector extends Component {
 
           <div>
             <span class="gbfans-footer-search-heading">Search Something</span>
-            <form class="gbfans-footer-search" role="search" action="{{this.siteUrl}}/" method="get">
+            <form class="gbfans-footer-search" role="search" action="{{this.searchUrl}}" method="get">
               <label for="gbfans-footer-search" class="sr-only">Search {{this.brandName}} content</label>
-              <input id="gbfans-footer-search" name="s" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
+              <input id="gbfans-footer-search" name="q" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
               <button type="submit" aria-label="Search" class="gbfans-footer-search__button">&#128269;</button>
             </form>
           </div>
