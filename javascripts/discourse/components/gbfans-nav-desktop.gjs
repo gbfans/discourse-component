@@ -1,9 +1,16 @@
 import Component from "@glimmer/component";
 
+const DEFAULT_GBFANS_SITE_URL = "https://www.gbfans.com";
+
+function gbfansSiteUrl() {
+  const rawUrl = settings.gbfans_site_url || DEFAULT_GBFANS_SITE_URL;
+  return String(rawUrl).trim().replace(/\/+$/, "") || DEFAULT_GBFANS_SITE_URL;
+}
+
 /** Desktop navigation bar with CSS-only hover dropdowns. */
 export default class GbfansNavDesktop extends Component {
   get siteUrl() {
-    return settings.gbfans_site_url || "https://gbfans.com";
+    return gbfansSiteUrl();
   }
 
   /** Resolve a URL: external URLs pass through, "/" stays as-is, others get site URL prefix. */
@@ -19,12 +26,11 @@ export default class GbfansNavDesktop extends Component {
     const links = settings.nav_links || [];
     const topLevel = links.filter((l) => !l.parent);
 
-    return topLevel.map((item, index) => ({
+    return topLevel.map((item) => ({
       text: item.text,
       url: this._resolveUrl(item.url),
       target: item.target || "_self",
       rel: item.target === "_blank" ? "noreferrer" : "",
-      isFirst: index === 0,
       isForum: item.url === "/",
       children: links
         .filter((l) => l.parent === item.text)
@@ -43,7 +49,7 @@ export default class GbfansNavDesktop extends Component {
       <ul class="gbfans-nav-list" role="menubar">
         {{#each this.navTree as |item|}}
           <li
-            class="gbfans-nav-item{{if item.children.length ' has-dropdown'}}{{if item.isFirst ' gbfans-nav-item--active'}}{{if item.isForum ' gbfans-nav-item--forum'}}"
+            class="gbfans-nav-item{{if item.children.length ' has-dropdown'}}{{if item.isForum ' gbfans-nav-item--forum'}}"
             role="none"
           >
             <a

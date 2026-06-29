@@ -1,6 +1,19 @@
 import Component from "@glimmer/component";
 import GbfansSocialIcons from "../../components/gbfans-social-icons";
 
+const DEFAULT_GBFANS_SITE_URL = "https://www.gbfans.com";
+
+function gbfansSiteUrl() {
+  const rawUrl = settings.gbfans_site_url || DEFAULT_GBFANS_SITE_URL;
+  return String(rawUrl).trim().replace(/\/+$/, "") || DEFAULT_GBFANS_SITE_URL;
+}
+
+function gbfansMainSiteUrl(path) {
+  if (!path) return gbfansSiteUrl();
+  if (/^https?:\/\//.test(path)) return path;
+  return `${gbfansSiteUrl()}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 /**
  * Footer connector rendered in the below-footer outlet.
  * Contains branding, description, search, and copyright.
@@ -9,11 +22,13 @@ import GbfansSocialIcons from "../../components/gbfans-social-icons";
  */
 export default class GbfansFooterConnector extends Component {
   get siteUrl() {
-    return settings.gbfans_site_url || "https://gbfans.com";
+    return gbfansSiteUrl();
   }
 
   get footerLogoUrl() {
-    return `${this.siteUrl}${settings.footer_logo_url || "/GBFans-Square-Logo-White-Text.png"}`;
+    return gbfansMainSiteUrl(
+      settings.footer_logo_url || "/GBFans-Square-Logo-White-Text.png",
+    );
   }
 
   get brandName() {
@@ -26,7 +41,11 @@ export default class GbfansFooterConnector extends Component {
 
   get joinUrl() {
     const path = settings.footer_join_url || "/sign-up/";
-    return `${this.siteUrl}${path}`;
+    return gbfansMainSiteUrl(path);
+  }
+
+  get searchUrl() {
+    return gbfansMainSiteUrl("/search");
   }
 
   get currentYear() {
@@ -51,9 +70,9 @@ export default class GbfansFooterConnector extends Component {
 
           <div>
             <span class="gbfans-footer-search-heading">Search Something</span>
-            <form class="gbfans-footer-search" role="search" action="{{this.siteUrl}}/" method="get">
+            <form class="gbfans-footer-search" role="search" action="{{this.searchUrl}}" method="get">
               <label for="gbfans-footer-search" class="sr-only">Search {{this.brandName}} content</label>
-              <input id="gbfans-footer-search" name="s" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
+              <input id="gbfans-footer-search" name="q" type="search" placeholder="Type something and Enter" class="gbfans-footer-search__input" />
               <button type="submit" aria-label="Search" class="gbfans-footer-search__button">&#128269;</button>
             </form>
           </div>
