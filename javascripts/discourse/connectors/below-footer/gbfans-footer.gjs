@@ -1,6 +1,19 @@
 import Component from "@glimmer/component";
 import GbfansSocialIcons from "../../components/gbfans-social-icons";
 
+const DEFAULT_GBFANS_SITE_URL = "https://www.gbfans.com";
+
+function gbfansSiteUrl() {
+  const rawUrl = settings.gbfans_site_url || DEFAULT_GBFANS_SITE_URL;
+  return String(rawUrl).trim().replace(/\/+$/, "") || DEFAULT_GBFANS_SITE_URL;
+}
+
+function gbfansMainSiteUrl(path) {
+  if (!path) return gbfansSiteUrl();
+  if (/^https?:\/\//.test(path)) return path;
+  return `${gbfansSiteUrl()}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 /**
  * Footer connector rendered in the below-footer outlet.
  * Contains branding, description, search, and copyright.
@@ -9,11 +22,13 @@ import GbfansSocialIcons from "../../components/gbfans-social-icons";
  */
 export default class GbfansFooterConnector extends Component {
   get siteUrl() {
-    return settings.gbfans_site_url || "https://gbfans.com";
+    return gbfansSiteUrl();
   }
 
   get footerLogoUrl() {
-    return `${this.siteUrl}${settings.footer_logo_url || "/GBFans-Square-Logo-White-Text.png"}`;
+    return gbfansMainSiteUrl(
+      settings.footer_logo_url || "/GBFans-Square-Logo-White-Text.png",
+    );
   }
 
   get brandName() {
@@ -26,7 +41,7 @@ export default class GbfansFooterConnector extends Component {
 
   get joinUrl() {
     const path = settings.footer_join_url || "/sign-up/";
-    return `${this.siteUrl}${path}`;
+    return gbfansMainSiteUrl(path);
   }
 
   get currentYear() {

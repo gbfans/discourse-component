@@ -3,19 +3,32 @@ import { service } from "@ember/service";
 import GbfansNavDesktop from "../../components/gbfans-nav-desktop";
 import GbfansSocialIcons from "../../components/gbfans-social-icons";
 
+const DEFAULT_GBFANS_SITE_URL = "https://www.gbfans.com";
+
+function gbfansSiteUrl() {
+  const rawUrl = settings.gbfans_site_url || DEFAULT_GBFANS_SITE_URL;
+  return String(rawUrl).trim().replace(/\/+$/, "") || DEFAULT_GBFANS_SITE_URL;
+}
+
+function gbfansMainSiteUrl(path) {
+  if (!path) return gbfansSiteUrl();
+  if (/^https?:\/\//.test(path)) return path;
+  return `${gbfansSiteUrl()}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 /**
  * Injects dynamic image URLs as CSS custom properties.
  * Guarded by element ID to prevent duplicates.
  */
-function injectDynamicStyles(baseUrl) {
+function injectDynamicStyles() {
   if (document.getElementById("gbfans-dynamic-urls")) return;
   const style = document.createElement("style");
   style.id = "gbfans-dynamic-urls";
   style.textContent = `
     :root {
-      --gbfans-bg-tiled-url: url("${baseUrl}/GBFans-Background-Tiled2.png");
-      --gbfans-nav-tile-url: url("${baseUrl}/nav-tile.png");
-      --gbfans-footer-bg-url: url("${baseUrl}/Mini-Pufts-by-Stuart-Reeves-1.png");
+      --gbfans-bg-tiled-url: url("${gbfansMainSiteUrl("GBFans-Background-Tiled2.png")}");
+      --gbfans-nav-tile-url: url("${gbfansMainSiteUrl("nav-tile.png")}");
+      --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("Mini-Pufts-by-Stuart-Reeves-1.png")}");
     }
   `;
   document.head.appendChild(style);
@@ -32,7 +45,7 @@ export default class GbfansHeaderConnector extends Component {
 
   constructor() {
     super(...arguments);
-    injectDynamicStyles(this.siteUrl);
+    injectDynamicStyles();
   }
 
   get isDesktop() {
@@ -40,11 +53,13 @@ export default class GbfansHeaderConnector extends Component {
   }
 
   get siteUrl() {
-    return settings.gbfans_site_url || "https://gbfans.com";
+    return gbfansSiteUrl();
   }
 
   get logoUrl() {
-    return `${this.siteUrl}${settings.logo_url || "/GBFans-Logo-Wide-Black-BG.png"}`;
+    return gbfansMainSiteUrl(
+      settings.logo_url || "/GBFans-Logo-Wide-Black-BG.png",
+    );
   }
 
   get ctaText() {
@@ -53,7 +68,7 @@ export default class GbfansHeaderConnector extends Component {
 
   get ctaUrl() {
     const path = settings.top_bar_cta_url || "/supporting";
-    return `${this.siteUrl}${path}`;
+    return gbfansMainSiteUrl(path);
   }
 
   get brandName() {

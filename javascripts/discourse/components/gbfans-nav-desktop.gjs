@@ -1,9 +1,16 @@
 import Component from "@glimmer/component";
 
+const DEFAULT_GBFANS_SITE_URL = "https://www.gbfans.com";
+
+function gbfansSiteUrl() {
+  const rawUrl = settings.gbfans_site_url || DEFAULT_GBFANS_SITE_URL;
+  return String(rawUrl).trim().replace(/\/+$/, "") || DEFAULT_GBFANS_SITE_URL;
+}
+
 /** Desktop navigation bar with CSS-only hover dropdowns. */
 export default class GbfansNavDesktop extends Component {
   get siteUrl() {
-    return settings.gbfans_site_url || "https://gbfans.com";
+    return gbfansSiteUrl();
   }
 
   /** Resolve a URL: external URLs pass through, "/" stays as-is, others get site URL prefix. */
