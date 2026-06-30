@@ -32,11 +32,11 @@
   --gbfans-footer-input-border: #444444;
   --gbfans-shadow-panel: 0 15px 35px rgba(0, 0, 0, 0.25);
 
-  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(16) = 108
-  --gbfans-chrome-height: 108px;
+  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(10) = 102
+  --gbfans-chrome-height: 102px;
 
-  // Total sticky chrome: sticky header(108) + nav bar(50) = 158
-  --gbfans-total-chrome: 158px;
+  // Total sticky chrome: sticky header(102) + nav bar(50) = 152
+  --gbfans-total-chrome: 152px;
 
   // Override Discourse's header offset for sidebar/timeline sticky positioning.
   --header-offset: var(--gbfans-total-chrome) !important;

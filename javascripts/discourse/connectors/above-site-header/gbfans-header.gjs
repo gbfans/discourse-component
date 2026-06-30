@@ -27,7 +27,6 @@ function injectDynamicStyles() {
   style.textContent = `
     :root {
       --gbfans-bg-tiled-url: url("${gbfansMainSiteUrl("GBFans-Background-Tiled2.png")}");
-      --gbfans-nav-tile-url: url("${gbfansMainSiteUrl("nav-tile.png")}");
       --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("mini-pufts-footer.png")}");
     }
   `;
