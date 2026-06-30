@@ -28,7 +28,7 @@ function injectDynamicStyles() {
     :root {
       --gbfans-bg-tiled-url: url("${gbfansMainSiteUrl("GBFans-Background-Tiled2.png")}");
       --gbfans-nav-tile-url: url("${gbfansMainSiteUrl("nav-tile.png")}");
-      --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("Mini-Pufts-by-Stuart-Reeves-1.png")}");
+      --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("mini-pufts-footer.png")}");
     }
   `;
   document.head.appendChild(style);

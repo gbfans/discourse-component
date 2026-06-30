@@ -3,11 +3,31 @@
 // =============================================================================
 
 .gbfans-footer-branding {
+  position: relative;
+  z-index: 1;
   background-color: var(--gbfans-footer-branding-bg);
-  background-image: var(--gbfans-footer-bg-url, url("https://www.gbfans.com/Mini-Pufts-by-Stuart-Reeves-1.png"));
-  background-repeat: no-repeat;
-  background-position: right bottom;
   color: var(--gbfans-footer-text);
+}
+
+// Decorative Mini-Pufts mascot that straddles the branding/copyright
+// divide: the top 60px sits in the branding row and the lower 90px hangs
+// down into the copyright row. Matches the footer mascot on the Next.js
+// site. The image is 114x150; bottom: -90px drops it 90px past the
+// section edge, leaving 60px above. z-index keeps it behind the branding
+// content while still painting over the copyright row below.
+.gbfans-footer-branding::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -90px;
+  z-index: -1;
+  width: 114px;
+  height: 150px;
+  background-image: var(--gbfans-footer-bg-url, url("https://www.gbfans.com/mini-pufts-footer.png"));
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: contain;
+  pointer-events: none;
 }
 
 .gbfans-footer-branding__inner {
