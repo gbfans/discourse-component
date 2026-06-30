@@ -506,6 +506,30 @@ body {
   }
 }
 
+// Legal links row (Privacy Policy, Terms of Service, DMCA) — matches
+// the "Legal links" nav in site-footer.tsx (my-2 flex flex-wrap gap-x-4 gap-y-1).
+.gbfans-footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 4px;
+  margin: 8px 0;
+}
+
+.gbfans-footer-legal__link {
+  color: var(--gbfans-footer-text) !important;
+  text-decoration: none !important;
+
+  &:hover {
+    color: var(--gbfans-brand) !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--gbfans-brand);
+    outline-offset: 2px;
+  }
+}
+
 // =============================================================================
 // Discourse Header — reposition native icons into GBFans top bar
 // =============================================================================
