@@ -41,11 +41,11 @@
   --gbfans-footer-input-border: #444444;
   --gbfans-shadow-panel: 0 15px 35px rgba(0, 0, 0, 0.25);
 
-  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(16) = 108
-  --gbfans-chrome-height: 108px;
+  // Sticky header height: border-top(2) + logo header(~90) + nav-tile(10) = 102
+  --gbfans-chrome-height: 102px;
 
-  // Total sticky chrome: sticky header(108) + nav bar(50) = 158
-  --gbfans-total-chrome: 158px;
+  // Total sticky chrome: sticky header(102) + nav bar(50) = 152
+  --gbfans-total-chrome: 152px;
 
   // Override Discourse's header offset for sidebar/timeline sticky positioning.
   --header-offset: var(--gbfans-total-chrome) !important;
@@ -263,8 +263,12 @@ body {
 }
 
 .gbfans-nav-tile {
-  height: 16px;
-  background: var(--gbfans-nav-tile-url, url("https://www.gbfans.com/nav-tile.png")) repeat-x;
+  height: 10px;
+  // Hazard-tape divider rendered as a CSS gradient (matches the Next.js
+  // CautionStripe component: 135deg, 29px bands, 82px tile). Replaces the
+  // legacy nav-tile.png image so the two sites share one source of truth.
+  background-image: repeating-linear-gradient(135deg, #fcd11a 0 29px, #0a0a0a 29px 58px);
+  background-size: 82px 82px;
 }
 
 // =============================================================================
@@ -640,10 +644,10 @@ body {
 // ── Narrow/mobile (≤767px): fixed header bar below GBFans chrome ─────────────
 @media (max-width: 767px) {
   :root {
-    // Narrower chrome: border-top(2) + logo(~60) + nav-tile(8) = 70
-    --gbfans-chrome-height: 70px;
-    --gbfans-total-chrome: 70px;
-    --header-offset: 70px !important;
+    // Narrower chrome: border-top(2) + logo(~60) + nav-tile(10) = 72
+    --gbfans-chrome-height: 72px;
+    --gbfans-total-chrome: 72px;
+    --header-offset: 72px !important;
   }
 
   .gbfans-logo-header__inner {
@@ -655,7 +659,7 @@ body {
   }
 
   .gbfans-nav-tile {
-    height: 8px;
+    height: 10px;
   }
 
   #main-outlet-wrapper {
