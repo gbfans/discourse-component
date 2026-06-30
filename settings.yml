@@ -267,3 +267,27 @@ footer_join_url:
   default: "/sign-up/"
   type: string
   description: "URL for the JOIN US link in the footer (relative to site URL)."
+
+footer_legal_links:
+  type: objects
+  default:
+    - text: "Privacy Policy"
+      url: "/privacy-policy"
+    - text: "Terms of Service"
+      url: "/terms-of-service"
+    - text: "DMCA"
+      url: "/dmca"
+  schema:
+    name: "legal link"
+    properties:
+      text:
+        type: string
+        required: true
+        validations:
+          min_length: 1
+          max_length: 100
+      url:
+        type: string
+        required: true
+        validations:
+          max_length: 2048

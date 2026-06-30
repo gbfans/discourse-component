@@ -44,6 +44,14 @@ export default class GbfansFooterConnector extends Component {
     return gbfansMainSiteUrl(path);
   }
 
+  /** Footer legal links (Privacy Policy, Terms of Service, DMCA) with URLs resolved against the main site. */
+  get legalLinks() {
+    return (settings.footer_legal_links || []).map((link) => ({
+      text: link.text,
+      url: gbfansMainSiteUrl(link.url),
+    }));
+  }
+
   get searchUrl() {
     return gbfansMainSiteUrl("/search");
   }
@@ -82,7 +90,15 @@ export default class GbfansFooterConnector extends Component {
       <div class="gbfans-footer-copyright">
         <div class="gbfans-footer-copyright__inner">
           &copy; 2000 - {{this.currentYear}} {{this.brandName}} LLC. All rights reserved. Created by AJ Quick
-          <br />
+          {{#if this.legalLinks.length}}
+            <nav class="gbfans-footer-legal" aria-label="Legal links">
+              {{#each this.legalLinks as |link|}}
+                <a href="{{link.url}}" class="gbfans-footer-legal__link">{{link.text}}</a>
+              {{/each}}
+            </nav>
+          {{else}}
+            <br />
+          {{/if}}
           &ldquo;GBFans.com&rdquo; is a registered Trademark of {{this.brandName}} LLC.
           <br />
           &ldquo;Ghostbusters&rdquo; and &ldquo;Ghost-Design&rdquo; are
