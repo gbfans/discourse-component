@@ -156,6 +156,10 @@ nav_links:
       url: "/fans"
       parent: "Fans"
       target: "_self"
+    - text: "Supporting Membership"
+      url: "/fans/supporting"
+      parent: "Fans"
+      target: "_self"
     - text: "Franchises"
       url: "/fans/franchises"
       parent: "Fans"
@@ -229,8 +233,11 @@ social_links:
       url: "https://x.com/gbfans"
       icon: "fab-x-twitter"
     - name: "YouTube"
-      url: "https://youtube.com/c/ghostbustersfans"
+      url: "https://www.youtube.com/c/ghostbustersfans?sub_confirmation=1"
       icon: "fab-youtube"
+    - name: "Discord"
+      url: "https://discord.gg/HF5X9dBTr6"
+      icon: "fab-discord"
   schema:
     name: "social link"
     properties:
@@ -248,7 +255,7 @@ social_links:
 svg_icons:
   type: list
   list_type: compact
-  default: "fab-instagram|fab-facebook|fab-x-twitter|fab-youtube"
+  default: "fab-instagram|fab-facebook|fab-x-twitter|fab-youtube|fab-discord"
   description: "FontAwesome icon classes used by social links. Add any new icons here so Discourse includes them in the icon sprite."
 
 footer_description:
