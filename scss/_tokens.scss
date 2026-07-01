@@ -25,6 +25,15 @@
 // --color-page-bg) in the respective Discourse color palettes.
 // --gbfans-nav-active similarly has no dedicated slot; --tertiary is the
 // closest Discourse "accent" analog and is admin-tunable per palette.
+//
+// --gbfans-nav-bg is read from --selected rather than an auto-derived shade.
+// Next.js's nav-bg is DARKER than its surface in BOTH themes (light #f0f0f0
+// on #ffffff surface, dark #0f0f0f on #141414 surface) — unlike every other
+// neutral token here, it does not "move toward the text color" as the theme
+// flips, so Discourse's -low/-high shades (which always shift toward
+// --primary) produce the wrong direction in dark mode. The operator must set
+// --selected to #f0f0f0 (light) / #0f0f0f (dark, matching Next.js's
+// --color-nav-bg) in the respective Discourse color palettes.
 // -----------------------------------------------------------------------------
 :root {
   --gbfans-surface: var(--secondary);
@@ -48,7 +57,7 @@
   // See note above: operator sets --quaternary per palette.
   --gbfans-page-bg: var(--quaternary);
 
-  --gbfans-nav-bg: var(--secondary-high);
+  --gbfans-nav-bg: var(--selected);
   --gbfans-nav-text: var(--primary);
   --gbfans-nav-hover-bg: var(--primary-low);
   --gbfans-nav-active: var(--tertiary);
