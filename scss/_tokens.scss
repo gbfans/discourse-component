@@ -4,32 +4,66 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
 
+// -----------------------------------------------------------------------------
+// Dark mode: derive from the Discourse color palette, don't hardcode a parallel
+// dark set. The active Discourse palette (light, or the admin-configured
+// "GBFans Dark" scheme) drives --primary/--secondary/--tertiary/--quaternary/
+// --header_background/--header_primary and their auto-derived shades
+// (-low/-low-mid/-medium/-high). The --gbfans-* tokens below read FROM those
+// palette vars, so whichever scheme the user selects (Preferences > Interface)
+// flows through automatically — no scheme detection needed here.
+//
+// Values are chosen to mirror apps/site/app/globals.css (Next.js source of
+// truth): neutrals map to the palette shade that auto-flips to the matching
+// Next.js light/dark value; brand-locked colors (red accent, footer) are NOT
+// theme-flipped in Next.js either, so they stay literal here too.
+//
+// --gbfans-page-bg has no native Discourse palette slot (it's the tiled
+// backdrop behind the panel, not a UI chrome color), so it's read from the
+// otherwise-unused --quaternary slot. The operator must set --quaternary to
+// #353535 (light) / #050505 (dark, matching Next.js's [data-theme="dark"]
+// --color-page-bg) in the respective Discourse color palettes.
+// --gbfans-nav-active similarly has no dedicated slot; --tertiary is the
+// closest Discourse "accent" analog and is admin-tunable per palette.
+// -----------------------------------------------------------------------------
 :root {
-  --gbfans-page-bg: #353535;
-  --gbfans-surface: #ffffff;
-  --gbfans-surface-alt: #f0f0f0;
-  --gbfans-surface-muted: #f4f4f4;
-  --gbfans-border: #dddddd;
-  --gbfans-border-light: #e3e3e3;
-  --gbfans-text: #000000;
-  --gbfans-text-secondary: #555555;
-  --gbfans-text-muted: #888888;
-  --gbfans-text-soft: #666666;
+  --gbfans-surface: var(--secondary);
+  --gbfans-surface-alt: var(--secondary-high);
+  --gbfans-surface-muted: var(--secondary-low);
+  --gbfans-border: var(--primary-low);
+  --gbfans-border-light: var(--secondary-high);
+  --gbfans-text: var(--primary);
+  --gbfans-text-secondary: var(--primary-high);
+  --gbfans-text-muted: var(--primary-medium);
+  --gbfans-text-soft: var(--primary-high);
+
+  // Ghostbusters brand red — locked, same in both themes (matches Next.js
+  // --color-accent / --color-brand-hover, which are not dark-overridden).
   --gbfans-brand: #ed1c24;
   --gbfans-brand-hover: #d12e2e;
-  --gbfans-header-bg: #000000;
-  --gbfans-header-text: #ffffff;
-  --gbfans-nav-bg: #f0f0f0;
-  --gbfans-nav-text: #000000;
-  --gbfans-nav-hover-bg: #dddddd;
-  --gbfans-nav-active: #b91c1c;
-  --gbfans-nav-border: #d6d6d6;
+
+  --gbfans-header-bg: var(--header_background);
+  --gbfans-header-text: var(--header_primary);
+
+  // See note above: operator sets --quaternary per palette.
+  --gbfans-page-bg: var(--quaternary);
+
+  --gbfans-nav-bg: var(--secondary-high);
+  --gbfans-nav-text: var(--primary);
+  --gbfans-nav-hover-bg: var(--primary-low);
+  --gbfans-nav-active: var(--tertiary);
+  --gbfans-nav-border: var(--primary-low);
+
+  // Footer is a fixed dark brand surface in both themes on the Next.js site
+  // (--color-footer-branding-bg / -copyright-bg / -text / -heading / -input-*
+  // are not dark-overridden in globals.css) — locked, do not theme-flip.
   --gbfans-footer-branding-bg: #333333;
   --gbfans-footer-copyright-bg: #2a2a2a;
   --gbfans-footer-text: #cccccc;
   --gbfans-footer-heading: #ffffff;
   --gbfans-footer-input-bg: #222222;
   --gbfans-footer-input-border: #444444;
+
   --gbfans-shadow-panel: 0 15px 35px rgba(0, 0, 0, 0.25);
 
   // Sticky header height: border-top(2) + logo header(~90) + nav-tile(10) = 102
@@ -48,13 +82,4 @@
     --gbfans-total-chrome: var(--gbfans-chrome-height) !important;
     --header-offset: var(--gbfans-chrome-height) !important;
   }
-}
-
-// Discourse color overrides
-:root {
-  --primary: var(--gbfans-text) !important;
-  --secondary: var(--gbfans-surface) !important;
-  --tertiary: var(--gbfans-brand) !important;
-  --header_background: var(--gbfans-header-bg) !important;
-  --header_primary: var(--gbfans-header-text) !important;
 }

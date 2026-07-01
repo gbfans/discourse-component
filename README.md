@@ -58,6 +58,18 @@ Navigation uses a flat list with a `parent` field to build dropdown hierarchy:
 
 Each social link has a `name`, `url`, and `icon` (Font Awesome name like `fab-instagram`). New icons must also be added to the `svg_icons` setting.
 
+## Dark Mode
+
+The component derives its colors from the active Discourse color palette instead of hardcoding a parallel dark set. `--gbfans-*` tokens read from `--primary`/`--secondary`/`--tertiary`/`--quaternary`/`--header_background`/`--header_primary` and their auto-generated shades (`-low`/`-low-mid`/`-medium`/`-high`), so whichever palette a user selects in Preferences → Interface flows through automatically.
+
+To enable dark mode:
+
+1. In Discourse Admin → Customize → Colors, configure (or confirm) the "GBFans Dark" palette. Set `primary`, `secondary`, `tertiary`, `header_background`, and `header_primary` to match the dark values in `apps/site/app/globals.css`'s `[data-theme="dark"]` block on the Next.js site.
+2. Set the palette's `quaternary` slot to `#050505` in the dark palette and `#353535` in the light/default palette — this drives `--gbfans-page-bg` (the tiled backdrop behind the panel), which has no dedicated Discourse palette role.
+3. In Admin → Customize → Themes, make sure the theme's color scheme is set to user-selectable and the dark scheme is assigned, so users can pick it from Preferences → Interface.
+
+Brand-locked colors (the Ghostbusters red accent, the footer) don't flip between themes on the Next.js site either, so they stay literal `--gbfans-*` values rather than palette-derived ones. See the token comments in `common/common.scss` (and its mirror `scss/_tokens.scss`) for the full mapping.
+
 ## Architecture
 
 - **Framework:** Discourse theme component (Glimmer/GJS)
