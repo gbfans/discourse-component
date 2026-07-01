@@ -35,14 +35,22 @@
 // --gbfans-nav-active similarly has no dedicated slot; --tertiary is the
 // closest Discourse "accent" analog and is admin-tunable per palette.
 //
-// --gbfans-nav-bg is read from --selected rather than an auto-derived shade.
-// Next.js's nav-bg is DARKER than its surface in BOTH themes (light #f0f0f0
-// on #ffffff surface, dark #0f0f0f on #141414 surface) — unlike every other
-// neutral token here, it does not "move toward the text color" as the theme
-// flips, so Discourse's -low/-high shades (which always shift toward
-// --primary) produce the wrong direction in dark mode. The operator must set
-// --selected to #f0f0f0 (light) / #0f0f0f (dark, matching Next.js's
-// --color-nav-bg) in the respective Discourse color palettes.
+// --gbfans-nav-bg uses color-mix() instead of a palette var. Next.js's
+// nav-bg is DARKER than its surface in BOTH themes (light #f0f0f0 on
+// #ffffff, dark #0f0f0f on #141414) — unlike every other neutral token
+// here, it doesn't "move toward the text color" as the theme flips, it's
+// always a shade darker than --secondary. Discourse's -low/-high shades
+// always interpolate BETWEEN --primary and --secondary, so they can never
+// reach a value darker than --secondary itself in dark mode (where
+// --secondary is already near-black) — confirmed on the live site: no
+// shade var can produce Next's #0f0f0f floor. Verified admin-editable
+// fields named "selected"/"hover" in the Discourse color UI do NOT exist
+// as root CSS custom properties on this Discourse version (read back
+// empty), so they can't be repurposed the way --quaternary was below.
+// color-mix() with a fixed 8% black always darkens --secondary regardless
+// of theme (#ffffff -> ~#ebebeb, #141414 -> ~#121212), landing within a
+// few RGB units of Next's exact values without depending on any
+// unverified palette slot.
 // -----------------------------------------------------------------------------
 :root {
   --gbfans-surface: var(--secondary);
@@ -66,7 +74,7 @@
   // See note above: operator sets --quaternary per palette.
   --gbfans-page-bg: var(--quaternary);
 
-  --gbfans-nav-bg: var(--selected);
+  --gbfans-nav-bg: color-mix(in srgb, var(--secondary) 92%, black 8%);
   --gbfans-nav-text: var(--primary);
   --gbfans-nav-hover-bg: var(--primary-low);
   --gbfans-nav-active: var(--tertiary);
