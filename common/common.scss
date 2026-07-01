@@ -958,11 +958,24 @@ h1, h2, h3, h4, h5, h6,
   z-index: 1;
 }
 
-// Composer
+// Composer — #reply-control is position:fixed (relative to the viewport),
+// so on wide screens it must be capped and centered to line up with the
+// 1440px-constrained body.
 #reply-control {
   max-width: 1440px !important;
   left: 50% !important;
   transform: translateX(-50%);
+
+  // On mobile the body already fills the viewport (full-bleed), so the
+  // desktop centering above pushes the composer half off-screen to the
+  // right — Discourse's own composer transforms override our translateX
+  // while left: 50% sticks. Restore native edge-to-edge positioning.
+  @media (max-width: 767px) {
+    max-width: none !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none;
+  }
 }
 
 // Splash screen
