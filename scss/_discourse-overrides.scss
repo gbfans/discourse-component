@@ -49,11 +49,20 @@ h1, h2, h3, h4, h5, h6,
   z-index: 1;
 }
 
-// Composer
+// Composer — align the fixed composer bar to the 1440px-capped body.
+//
+// Discourse core already centers #reply-control itself with
+// `left: 0; right: 0; margin-inline: auto; max-width: 1475px`, so all this
+// theme needs to do is tighten that cap from 1475px to 1440px to match the
+// body width. Core's auto-margins handle the centering at every viewport.
+//
+// Do NOT reintroduce `left: 50% + translateX(-50%)`: core's open composer
+// rule (`#reply-control.open { transform: none }`, higher specificity) drops
+// the translate while `left: 50%` sticks, which shoves the composer half
+// off-screen to the right — the mobile reply-box bug. Below 1440px this cap
+// is inert and the composer is simply full-width, as Discourse intends.
 #reply-control {
   max-width: 1440px !important;
-  left: 50% !important;
-  transform: translateX(-50%);
 }
 
 // Splash screen
