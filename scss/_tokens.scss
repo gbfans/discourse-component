@@ -18,13 +18,13 @@
 // Next.js light/dark value; brand-locked colors (red accent, footer) are NOT
 // theme-flipped in Next.js either, so they stay literal here too.
 //
-// --gbfans-page-bg has no native Discourse palette slot (it's the tiled
-// backdrop behind the panel, not a UI chrome color), so it's read from the
-// otherwise-unused --quaternary slot. The operator must set --quaternary to
-// #353535 (light) / #050505 (dark, matching Next.js's [data-theme="dark"]
-// --color-page-bg) in the respective Discourse color palettes.
-// --gbfans-nav-active similarly has no dedicated slot; --tertiary is the
-// closest Discourse "accent" analog and is admin-tunable per palette.
+// EXCEPTION — brand chrome does NOT derive from the palette: the black header
+// bar (--gbfans-header-bg/-text) and the dark tiled backdrop (--gbfans-page-bg)
+// are fixed GBFans/Ghostbusters brand elements in both light and dark modes.
+// They are kept literal below; deriving them flipped the header to a
+// near-content grey and the backdrop to brand red in dark mode.
+// --gbfans-nav-active has no dedicated palette slot; --tertiary is the closest
+// Discourse "accent" analog and is admin-tunable per palette.
 // -----------------------------------------------------------------------------
 :root {
   --gbfans-surface: var(--secondary);
@@ -42,11 +42,17 @@
   --gbfans-brand: #ed1c24;
   --gbfans-brand-hover: #d12e2e;
 
-  --gbfans-header-bg: var(--header_background);
-  --gbfans-header-text: var(--header_primary);
-
-  // See note above: operator sets --quaternary per palette.
-  --gbfans-page-bg: var(--quaternary);
+  // Brand chrome — the black GBFans/Ghostbusters header bar and the dark
+  // tiled backdrop are fixed brand elements in BOTH light and dark modes, so
+  // they must NOT derive from the Discourse palette. Deriving the header from
+  // --header_background flipped it to a near-content dark grey in dark mode
+  // (OS-dark or a dark scheme), so the sticky header lost all separation from
+  // the content behind it; deriving the backdrop from --quaternary turned it
+  // red (that slot is the brand accent in the GBFans palette). Keep literal,
+  // matching the pre-dark-mode values.
+  --gbfans-header-bg: #000000;
+  --gbfans-header-text: #ffffff;
+  --gbfans-page-bg: #353535;
 
   --gbfans-nav-bg: var(--secondary-high);
   --gbfans-nav-text: var(--primary);
