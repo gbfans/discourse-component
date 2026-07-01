@@ -998,6 +998,35 @@ h1, h2, h3, h4, h5, h6,
   max-width: 1440px !important;
 }
 
+// Preview toggled OFF: core re-aligns the docked composer to the topic
+// reading column via `margin-left` / `left` calcs based on `--d-max-width`
+// and `--d-sidebar-width`. Those assume a fluid, full-viewport layout;
+// against this theme's fixed 1440px body (and forced 280px sidebar) the math
+// shoves the composer to the right and overflows it off the screen edge. Pin
+// it to the same centered position as the preview-open state so toggling the
+// preview only shows/hides the preview pane — nothing shifts horizontally.
+// (`:not(.fullscreen)` leaves the fullscreen layout to core.)
+#reply-control.hide-preview:not(.fullscreen) {
+  left: 0 !important;
+  right: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+  max-width: 1440px !important;
+}
+
+// Fullscreen composer: core only gives it `z-index: 1001`, but the GBFans
+// chrome sits above that — sticky header (1100), main nav (1050) and the
+// repositioned Discourse header (`.d-header-wrap`, 1200). So in fullscreen
+// the composer's top control bar (fullscreen / minimize / close) is buried
+// behind the header and the top of the editor is clipped. Lift it above all
+// theme chrome — but below Discourse's own composer popups (toolbar menus
+// 1300, emoji picker 1700) so those still open on top — so fullscreen truly
+// covers the screen, as it does in stock Discourse.
+.fullscreen-composer #reply-control.fullscreen {
+  z-index: 1250 !important;
+}
+
 // Splash screen
 #d-splash {
   width: 100% !important;
