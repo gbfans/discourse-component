@@ -66,7 +66,8 @@ To enable dark mode:
 
 1. In Discourse Admin → Customize → Colors, configure (or confirm) the "GBFans Dark" palette. Set `primary`, `secondary`, `tertiary`, `header_background`, and `header_primary` to match the dark values in `apps/site/app/globals.css`'s `[data-theme="dark"]` block on the Next.js site.
 2. Set the palette's `quaternary` slot to `#050505` in the dark palette and `#353535` in the light/default palette — this drives `--gbfans-page-bg` (the tiled backdrop behind the panel), which has no dedicated Discourse palette role.
-3. In Admin → Customize → Themes, make sure the theme's color scheme is set to user-selectable and the dark scheme is assigned, so users can pick it from Preferences → Interface.
+3. Set the palette's `selected` slot to `#0f0f0f` in the dark palette and `#f0f0f0` in the light/default palette — this drives `--gbfans-nav-bg` (the desktop nav bar). It's borrowed the same way as `quaternary` because Next.js's nav bar is always darker than the surface behind it in both themes, which Discourse's auto-derived `-low`/`-high` shades can't express (they always shift toward `--primary`, flipping direction between themes).
+4. In Admin → Customize → Themes, make sure the theme's color scheme is set to user-selectable and the dark scheme is assigned, so users can pick it from Preferences → Interface.
 
 Brand-locked colors (the Ghostbusters red accent, the footer) don't flip between themes on the Next.js site either, so they stay literal `--gbfans-*` values rather than palette-derived ones. See the token comments in `common/common.scss` (and its mirror `scss/_tokens.scss`) for the full mapping.
 
