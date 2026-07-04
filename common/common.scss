@@ -98,6 +98,11 @@
   // Total sticky chrome: sticky header(102) + nav bar(50) = 152
   --gbfans-total-chrome: 152px;
 
+  // Chrome above #main-outlet at the top of the page: top bar (40, not sticky)
+  // + sticky chrome (152). Used to size full-page chat so it fills the viewport
+  // without the page itself scrolling.
+  --gbfans-viewport-chrome: calc(40px + var(--gbfans-total-chrome));
+
   // Override Discourse's header offset for sidebar/timeline sticky positioning.
   --header-offset: var(--gbfans-total-chrome) !important;
 }
@@ -689,6 +694,8 @@ body {
     --gbfans-chrome-height: 72px;
     --gbfans-total-chrome: 72px;
     --header-offset: 72px !important;
+    // No top bar on mobile, so viewport chrome == sticky chrome.
+    --gbfans-viewport-chrome: var(--gbfans-total-chrome);
   }
 
   .gbfans-logo-header__inner {
@@ -763,39 +770,45 @@ body {
   }
 }
 
-// ── Full-page chat reset ─────────────────────────────────────────────────────
-// When Discourse enters full-page chat, reset our header overrides so
-// the chat header (back arrow, channel name) works normally.
+// ── Full-page chat ───────────────────────────────────────────────────────────
+// Discourse full-page chat assumes it owns the whole viewport. This theme keeps
+// its GBFans header/nav in normal flow above #main-outlet, so left unbounded the
+// chat renders below all that chrome at its native ~100vh height — overflowing
+// the page, stacking the footer beneath it, and producing the "very weird"
+// double scroll. Bound the chat to the space under the chrome so its own message
+// list scrolls internally and the page itself doesn't scroll.
+//
+// The native Discourse header stays repositioned in the top bar exactly as on
+// every other page. The chat renders its OWN channel navbar (.c-navbar), so we
+// must NOT un-reposition .d-header here — doing that is what dropped a stray
+// second header bar into the layout in the bug report.
 body.has-full-page-chat {
-  .d-header-wrap {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    left: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    pointer-events: auto !important;
-  }
-
-  .d-header {
-    background: var(--gbfans-header-bg) !important;
-    height: auto !important;
-    min-height: unset !important;
-    pointer-events: auto !important;
-
-    > .wrap {
-      justify-content: flex-start;
-    }
-  }
-
-  .d-header .panel,
-  .d-header-icons {
-    pointer-events: auto !important;
-  }
-
-  // Hide the sidebar on full-page chat to maximize space
+  // Sidebar is force-shown on desktop; hide it so chat uses the full body width.
   .sidebar-wrapper {
     display: none !important;
+  }
+
+  // The GBFans footer would stack below the viewport-tall chat and push the
+  // page into a scroll — hide it while chat owns the screen.
+  .gbfans-footer {
+    display: none !important;
+  }
+
+  // Let chat span the full content column (drop the reading-column padding).
+  #main-outlet-wrapper,
+  #main-outlet {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  // Bound the chat to the viewport minus the chrome above it so the internal
+  // message scroller — not the page — handles overflow. dvh keeps the composer
+  // reachable on mobile browsers where 100vh hides behind the toolbar.
+  .full-page-chat {
+    height: calc(100vh - var(--gbfans-viewport-chrome)) !important;
+    height: calc(100dvh - var(--gbfans-viewport-chrome)) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
   }
 }
 

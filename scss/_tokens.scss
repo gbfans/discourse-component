@@ -89,6 +89,11 @@
   // Total sticky chrome: sticky header(102) + nav bar(50) = 152
   --gbfans-total-chrome: 152px;
 
+  // Chrome above #main-outlet at the top of the page: top bar (40, not sticky)
+  // + sticky chrome (152). Used to size full-page chat so it fills the viewport
+  // without the page itself scrolling.
+  --gbfans-viewport-chrome: calc(40px + var(--gbfans-total-chrome));
+
   // Override Discourse's header offset for sidebar/timeline sticky positioning.
   --header-offset: var(--gbfans-total-chrome) !important;
 }
@@ -98,5 +103,7 @@
   :root {
     --gbfans-total-chrome: var(--gbfans-chrome-height) !important;
     --header-offset: var(--gbfans-chrome-height) !important;
+    // No top bar on mobile, so viewport chrome == sticky chrome.
+    --gbfans-viewport-chrome: var(--gbfans-total-chrome) !important;
   }
 }
