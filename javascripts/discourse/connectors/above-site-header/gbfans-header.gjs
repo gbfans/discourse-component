@@ -1,4 +1,5 @@
 import Component from "@glimmer/component";
+import { registerDestructor } from "@ember/destroyable";
 import { service } from "@ember/service";
 import GbfansNavDesktop from "../../components/gbfans-nav-desktop";
 import GbfansSocialIcons from "../../components/gbfans-social-icons";
@@ -34,6 +35,60 @@ function injectDynamicStyles() {
 }
 
 /**
+ * Discourse's own `.d-header` is CSS-collapsed to 40px (see
+ * _discourse-header.scss) so its native header-offset calculation
+ * (frontend/discourse/app/lib/offset-calculator.js) writes a 40px
+ * `--header-offset` as an INLINE style on <html>. That's far shorter than
+ * the real GBFans sticky chrome (logo header + nav tile + nav bar), and
+ * that lib reads the inline style directly via
+ * `document.documentElement.style.getPropertyValue()` -- bypassing the CSS
+ * cascade entirely -- so our stylesheet `!important` override in
+ * _tokens.scss never reaches it. Without this, jumping to a permalinked
+ * post (e.g. /t/slug/id/23) scrolls short and the sticky header covers the
+ * top of the post.
+ */
+function totalChromeOffsetPx() {
+  const raw = getComputedStyle(document.documentElement)
+    .getPropertyValue("--gbfans-total-chrome")
+    .trim();
+  const px = parseInt(raw, 10);
+  return Number.isNaN(px) ? 0 : px;
+}
+
+function applyHeaderOffset() {
+  const desired = `${totalChromeOffsetPx()}px`;
+  if (
+    document.documentElement.style.getPropertyValue("--header-offset") !==
+    desired
+  ) {
+    document.documentElement.style.setProperty("--header-offset", desired);
+  }
+}
+
+/**
+ * Keeps the inline `--header-offset` pinned to the real GBFans chrome
+ * height. A MutationObserver re-asserts it whenever Discourse's own
+ * site-header component overwrites it (on initial render and on resize),
+ * and a resize listener recomputes it when the responsive chrome height
+ * itself changes (desktop/mobile breakpoint).
+ */
+function watchHeaderOffset() {
+  applyHeaderOffset();
+
+  const observer = new MutationObserver(applyHeaderOffset);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+  window.addEventListener("resize", applyHeaderOffset);
+
+  return () => {
+    observer.disconnect();
+    window.removeEventListener("resize", applyHeaderOffset);
+  };
+}
+
+/**
  * Header connector rendered in the above-site-header outlet.
  * Contains top bar (desktop), logo, nav tile, and navigation.
  * All logic lives here (no initializer) to match the discourse-header-submenus
@@ -45,6 +100,7 @@ export default class GbfansHeaderConnector extends Component {
   constructor() {
     super(...arguments);
     injectDynamicStyles();
+    registerDestructor(this, watchHeaderOffset());
   }
 
   get isDesktop() {
