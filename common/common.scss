@@ -748,17 +748,6 @@ body {
   // which was the original bug. .d-header-wrap is a sibling of the GBFans
   // header (not an ancestor), so fixing it here does not affect the sticky
   // header's own flow.
-  //
-  // Discourse's core header (.d-header, backface-visibility:hidden "for
-  // scrolling performance") auto-hides the mobile header on scroll-down by
-  // writing an inline transform: translateY(...) onto .d-header-wrap via JS,
-  // then reveals it on scroll-up. With position:absolute that slide merely
-  // blended into "scrolls away"; with position:fixed it becomes a visible
-  // hide/reveal (icons vanish scrolling down, return scrolling up). The theme
-  // wants these ALWAYS visible, so neutralise that behaviour: the transform
-  // is an INLINE (non-important) style, which an author !important overrides,
-  // and transition:none removes the slide animation so nothing flinches.
-  // top:0 !important likewise beats any inline top-offset variant of the hide.
   .d-header-wrap {
     position: fixed !important;
     top: 0 !important;
@@ -766,8 +755,6 @@ body {
     left: auto !important;
     width: auto !important;
     height: auto !important;
-    transform: none !important;
-    transition: none !important;
     z-index: 1200 !important;
     pointer-events: none;
   }
@@ -777,12 +764,6 @@ body {
     border-bottom: none !important;
     box-shadow: none !important;
     pointer-events: none;
-    // Belt-and-suspenders for the scroll-hide neutralised on .d-header-wrap
-    // above: if Discourse applies its translateY to the inner .d-header
-    // (which carries the backface-visibility perf hint) instead of the wrap,
-    // pin it here too. No-op unless that inline transform is present.
-    transform: none !important;
-    transition: none !important;
 
     > .wrap {
       display: flex;
@@ -795,6 +776,17 @@ body {
 
   .d-header .panel {
     pointer-events: auto;
+  }
+
+  // Keep the header icon row visible while scrolling a topic. When Discourse
+  // "docks" the topic title into the header on scroll-down, core hides the
+  // adjacent icon row on mobile (`.d-header-icons` -> display:none) to free
+  // space for the title. This theme hides the docked title but still wants the
+  // icons (hamburger/search/chat/profile) reachable at all times, so keep the
+  // row shown. flex is its natural display; author !important beats core's
+  // non-important hide rule regardless of that rule's selector specificity.
+  .d-header-icons {
+    display: flex !important;
   }
 
   .d-header-icons,
