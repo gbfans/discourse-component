@@ -738,10 +738,18 @@ body {
     max-width: 100% !important;
   }
 
-  // Icons sit on the logo row — absolute positioned at top:0 right:0
-  // on .gbfans-sticky-header, same as wide desktop.
+  // Icons sit on the logo row, pinned to the top-right of the viewport with
+  // position:fixed so they STAY put as the page scrolls — matching the sticky
+  // GBFans logo header (.gbfans-sticky-header, position:sticky top:0) they
+  // visually sit on. Unlike wide desktop — where these icons ride the
+  // non-sticky top bar and are MEANT to scroll away — mobile has no top bar,
+  // so they must remain reachable while scrolling. position:absolute would
+  // anchor them to <body> (position:relative) and scroll them off with it,
+  // which is the bug this fixes. .d-header-wrap is a sibling of the GBFans
+  // header (not an ancestor), so fixing it here does not affect the sticky
+  // header's own flow.
   .d-header-wrap {
-    position: absolute !important;
+    position: fixed !important;
     top: 0 !important;
     right: 0 !important;
     left: auto !important;
