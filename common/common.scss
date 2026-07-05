@@ -710,14 +710,21 @@ body {
     height: 10px;
   }
 
-  // overflow-x:hidden lives on html/body (not #main-outlet-wrapper/#main-outlet)
-  // so it propagates to the viewport per the CSS root-overflow rule instead of
-  // becoming a local clip box. A local clip box on #main-outlet would clip
-  // Discourse's docked topic-progress widget (#topic-progress-wrapper,
-  // position: fixed) — the read-progress "1 / 150" nav — which lives inside
-  // #main-outlet and is exactly what went missing on real mobile devices.
-  html,
-  body {
+  // overflow-x:hidden lives on html ONLY (not body, not #main-outlet-wrapper/
+  // #main-outlet). Per the CSS root-overflow-propagation rule, this needs
+  // exactly one of html/body to declare a non-visible overflow so it can
+  // substitute for the viewport's scrollport — setting it on both (or on
+  // body) makes body's own overflow-x:hidden literal instead of substituted,
+  // which (a) still clips Discourse's docked topic-progress widget
+  // (#topic-progress-wrapper, position: fixed) exactly as #main-outlet did,
+  // since it's ordinary block clipping regardless of the fixed element's
+  // containing block, and (b) forces body's overflow-y to auto (the spec's
+  // paired-axis rule), turning body into its own nested scroll container —
+  // which position:sticky elements (the sticky header/nav) then anchor to
+  // instead of the real viewport scroller, breaking sticky entirely.
+  // html-only avoids both: it prevents the horizontal scrollbar at the true
+  // viewport level without creating any nested clip/scroll box.
+  html {
     overflow-x: hidden !important;
   }
 
