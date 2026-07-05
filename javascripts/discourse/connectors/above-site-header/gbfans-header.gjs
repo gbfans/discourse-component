@@ -89,6 +89,95 @@ function watchHeaderOffset() {
 }
 
 /**
+ * Keeps the repositioned Discourse header icons (hamburger, search, chat,
+ * profile) visible on mobile — including on topic pages.
+ *
+ * On topic pages Discourse "docks" its header and, on mobile, auto-hides it
+ * on scroll-down (sliding `.d-header-wrap` out of view) to free up reading
+ * space. This theme has moved those icons onto the always-visible GBFans logo
+ * row, so that hide is unwanted. Discourse applies the hide as inline styles
+ * on scroll, which can out-rank the theme's author `!important` CSS (inline
+ * `!important`, or via a class the CSS doesn't target), so re-assert the
+ * pinned position imperatively whenever Discourse mutates the header or the
+ * page scrolls. A value is written only when it has actually drifted, so there
+ * is no mutation feedback loop. Everything is gated to mobile widths: desktop
+ * deliberately lets the icons ride the top bar and scroll away, so the inline
+ * overrides are removed again when the viewport crosses back above 767px.
+ */
+function pinMobileHeaderIcons() {
+  const MOBILE = "(max-width: 767px)";
+  // The levers Discourse can use to slide/hide the docked header.
+  const PINNED = {
+    position: "fixed",
+    top: "0px",
+    "margin-top": "0px",
+    transform: "none",
+    translate: "none",
+  };
+  let observer;
+  let rafId;
+  let pinned = false;
+
+  function apply() {
+    const wrap = document.querySelector(".d-header-wrap");
+    if (!wrap) return;
+    // Discourse may translate the inner `.d-header` rather than the wrap.
+    const inner = wrap.querySelector(".d-header");
+
+    if (window.matchMedia(MOBILE).matches) {
+      for (const [prop, value] of Object.entries(PINNED)) {
+        if (wrap.style.getPropertyValue(prop) !== value) {
+          wrap.style.setProperty(prop, value, "important");
+        }
+      }
+      for (const prop of ["transform", "translate"]) {
+        if (inner && inner.style.getPropertyValue(prop) !== "none") {
+          inner.style.setProperty(prop, "none", "important");
+        }
+      }
+      pinned = true;
+    } else if (pinned) {
+      // Back on desktop: drop our mobile-only overrides so Discourse wins.
+      for (const prop of Object.keys(PINNED)) {
+        wrap.style.removeProperty(prop);
+      }
+      for (const prop of ["transform", "translate"]) {
+        inner?.style.removeProperty(prop);
+      }
+      pinned = false;
+    }
+  }
+
+  function start() {
+    const wrap = document.querySelector(".d-header-wrap");
+    if (!wrap) {
+      // Header not in the DOM yet — retry on the next frame.
+      rafId = requestAnimationFrame(start);
+      return;
+    }
+    apply();
+    observer = new MutationObserver(apply);
+    observer.observe(wrap, {
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+    // Scroll is what actually triggers Discourse's docked-header hide, so
+    // it's the most reliable re-assert trigger; resize handles the breakpoint.
+    window.addEventListener("scroll", apply, { passive: true });
+    window.addEventListener("resize", apply);
+  }
+
+  rafId = requestAnimationFrame(start);
+
+  return () => {
+    cancelAnimationFrame(rafId);
+    observer?.disconnect();
+    window.removeEventListener("scroll", apply);
+    window.removeEventListener("resize", apply);
+  };
+}
+
+/**
  * Header connector rendered in the above-site-header outlet.
  * Contains top bar (desktop), logo, nav tile, and navigation.
  * All logic lives here (no initializer) to match the discourse-header-submenus
@@ -101,6 +190,7 @@ export default class GbfansHeaderConnector extends Component {
     super(...arguments);
     injectDynamicStyles();
     registerDestructor(this, watchHeaderOffset());
+    registerDestructor(this, pinMobileHeaderIcons());
   }
 
   get isDesktop() {
