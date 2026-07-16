@@ -903,6 +903,35 @@ body.has-full-page-chat {
   .menu-panel.slide-in,
   .sidebar-wrapper,
   .d-sidebar {
+    // Remap the Discourse palette tokens inside the forced-dark panels.
+    // Core paints the panel internals (quick-access lists, .item-label /
+    // .item-description, btn-default, unread tints, hover states, the sidebar
+    // footer fade) with --primary/--secondary and their shades, which resolve
+    // against the active LIGHT scheme — producing black-on-black labels, white
+    // surfaces, and a white footer fade inside these black panels. Re-pointing
+    // the tokens at this scope makes every core rule resolve to panel-correct
+    // colors without chasing individual selectors. Shades are interpolated
+    // between the two header palette anchors, mirroring how core derives them
+    // from primary/secondary.
+    --primary: var(--gbfans-header-text);
+    --primary-very-high: color-mix(in srgb, var(--gbfans-header-text) 90%, var(--gbfans-header-bg));
+    --primary-high: color-mix(in srgb, var(--gbfans-header-text) 80%, var(--gbfans-header-bg));
+    --primary-medium: color-mix(in srgb, var(--gbfans-header-text) 60%, var(--gbfans-header-bg));
+    --primary-low-mid: color-mix(in srgb, var(--gbfans-header-text) 45%, var(--gbfans-header-bg));
+    --primary-low: color-mix(in srgb, var(--gbfans-header-text) 15%, var(--gbfans-header-bg));
+    --primary-very-low: color-mix(in srgb, var(--gbfans-header-text) 7%, var(--gbfans-header-bg));
+    --secondary: var(--gbfans-header-bg);
+    // These are defined at :root FROM the tokens above, so they inherit
+    // already-computed light-scheme values into this scope — each must be
+    // re-pointed explicitly, remapping --primary/--secondary is not enough.
+    --d-hover: color-mix(in srgb, var(--gbfans-header-text) 10%, var(--gbfans-header-bg));
+    --d-selected: color-mix(in srgb, var(--gbfans-header-text) 14%, var(--gbfans-header-bg));
+    --d-sidebar-footer-fade: var(--gbfans-header-bg);
+    // Unread-notification tint: keep the accent hue but sink it into the dark
+    // background (light scheme uses the pale --tertiary-low wash).
+    --tertiary-low: color-mix(in srgb, var(--tertiary) 30%, var(--gbfans-header-bg));
+    --tertiary-very-low: color-mix(in srgb, var(--tertiary) 15%, var(--gbfans-header-bg));
+
     background: var(--gbfans-header-bg) !important;
     color: var(--gbfans-header-text) !important;
     border-color: #333333 !important;
@@ -952,6 +981,22 @@ body.has-full-page-chat {
       background: var(--gbfans-header-bg) !important;
       color: var(--gbfans-header-text) !important;
       border-top-color: #333333 !important;
+    }
+
+    // The overflow fade above the sidebar footer is painted by core with
+    // --d-sidebar-footer-fade (white in the light scheme), leaving a white
+    // smear across this dark panel. Repaint it to fade into the panel
+    // background — the token remap above covers var() plumbing, this covers
+    // any core definition that bakes in the light value.
+    .sidebar-footer-container::before {
+      background: linear-gradient(to bottom, transparent, var(--gbfans-header-bg)) !important;
+    }
+
+    // Unread count badges (user-menu tab strip, group inbox counts): core
+    // paints the number with --secondary, which the remap above turns
+    // near-black on the red badge — keep it white as on desktop.
+    .badge-notification {
+      color: #ffffff !important;
     }
 
     .sidebar-sections {
