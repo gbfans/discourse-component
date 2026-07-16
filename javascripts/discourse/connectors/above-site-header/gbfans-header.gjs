@@ -28,7 +28,7 @@ function injectDynamicStyles() {
   style.textContent = `
     :root {
       --gbfans-bg-tiled-url: url("${gbfansMainSiteUrl("GBFans-Background-Tiled2.png")}");
-      --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("mini-pufts-footer.png")}");
+      --gbfans-footer-bg-url: url("${gbfansMainSiteUrl("gbfans-mini-pufts.png")}");
     }
   `;
   document.head.appendChild(style);
@@ -113,7 +113,7 @@ export default class GbfansHeaderConnector extends Component {
 
   get logoUrl() {
     return gbfansMainSiteUrl(
-      settings.logo_url || "/GBFans-Logo-Wide-Black-BG.png",
+      settings.logo_url || "/gbfans-logo-wide.png",
     );
   }
 

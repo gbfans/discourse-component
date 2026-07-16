@@ -14,12 +14,12 @@ brand_name:
   description: "Brand name used in headings and alt text."
 
 logo_url:
-  default: "/GBFans-Logo-Wide-Black-BG.png"
+  default: "/gbfans-logo-wide.png"
   type: string
   description: "Path appended to site URL for the header logo."
 
 footer_logo_url:
-  default: "/GBFans-Square-Logo-White-Text.png"
+  default: "/gbfans-logo-square.png"
   type: string
   description: "Path appended to site URL for the footer logo."
 
