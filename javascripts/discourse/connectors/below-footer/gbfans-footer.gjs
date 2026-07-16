@@ -27,7 +27,7 @@ export default class GbfansFooterConnector extends Component {
 
   get footerLogoUrl() {
     return gbfansMainSiteUrl(
-      settings.footer_logo_url || "/GBFans-Square-Logo-White-Text.png",
+      settings.footer_logo_url || "/gbfans-logo-square.png",
     );
   }
 
