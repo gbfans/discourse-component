@@ -927,8 +927,19 @@ body.has-full-page-chat {
     --d-hover: color-mix(in srgb, var(--gbfans-header-text) 10%, var(--gbfans-header-bg));
     --d-selected: color-mix(in srgb, var(--gbfans-header-text) 14%, var(--gbfans-header-bg));
     --d-sidebar-footer-fade: var(--gbfans-header-bg);
-    // Unread-notification tint: keep the accent hue but sink it into the dark
-    // background (light scheme uses the pale --tertiary-low wash).
+    // Unread/pending notification rows: core fills these with
+    // --d-unread-notification-background, which defaults to the pale
+    // --tertiary-low pink of the LIGHT scheme and is computed at :root — so
+    // the --tertiary-low remap below can't reach it. Re-point it to a neutral
+    // grey that reads as "unread" against the black panel instead of pink.
+    --d-unread-notification-background: color-mix(in srgb, var(--gbfans-header-text) 15%, var(--gbfans-header-bg));
+    // Default buttons in the panel footers ("view all" / Dismiss) pull their
+    // base surface from these light-scheme tokens (also :root-computed); the
+    // explicit .btn-default rules below back this up for border + icon.
+    --d-button-default-bg-color: color-mix(in srgb, var(--gbfans-header-text) 16%, var(--gbfans-header-bg));
+    --d-button-default-text-color: var(--gbfans-header-text);
+    // Keep the accent-tinted washes dark too, for any core rule that paints
+    // with --tertiary-low directly rather than via --d-unread-* above.
     --tertiary-low: color-mix(in srgb, var(--tertiary) 30%, var(--gbfans-header-bg));
     --tertiary-very-low: color-mix(in srgb, var(--tertiary) 15%, var(--gbfans-header-bg));
 
@@ -997,6 +1008,27 @@ body.has-full-page-chat {
     // near-black on the red badge — keep it white as on desktop.
     .badge-notification {
       color: #ffffff !important;
+    }
+
+    // Default buttons in the panel footers (notifications "view all" &
+    // Dismiss): core gives them a light base surface and their icons carry an
+    // explicit dark color, so on the black panel they read as a white button
+    // with a black icon. Paint them as dark buttons with light text + icons.
+    // Backs up the --d-button-default-* remap above (which some builds don't
+    // honor for the border/icon).
+    .btn-default {
+      background: color-mix(in srgb, var(--gbfans-header-text) 16%, var(--gbfans-header-bg)) !important;
+      color: var(--gbfans-header-text) !important;
+      border-color: color-mix(in srgb, var(--gbfans-header-text) 28%, var(--gbfans-header-bg)) !important;
+
+      .d-icon {
+        color: var(--gbfans-header-text) !important;
+      }
+
+      &:hover {
+        background: color-mix(in srgb, var(--gbfans-header-text) 26%, var(--gbfans-header-bg)) !important;
+        color: var(--gbfans-header-text) !important;
+      }
     }
 
     .sidebar-sections {
